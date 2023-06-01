@@ -13,6 +13,9 @@ def create_app():
 
     db.init_app(app)
 
+    # Desregistrar la instancia de SQLAlchemy
+    #app.extensions.pop('sqlalchemy', None)
+
 
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
