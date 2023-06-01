@@ -1,9 +1,9 @@
 //API Connection
 //Get elements
 
-const apiServerUrl = "http://192.168.0.186:10510";
+//const apiServerUrl = "http://192.168.0.186:10510";
 //const apiServerUrl = "https://testing_api.linea21.store"; //TESTING
-//const apiServerUrl = "https://apimain.linea21.store"; //MAIN
+const apiServerUrl = "https://apimain.linea21.store"; //MAIN
 
 //Load lists from db
 
