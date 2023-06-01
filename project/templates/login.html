@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Shopping list</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+<!--    <link rel='stylesheet' type='text/css' media='screen' href='css/main.css'> -->
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="../static/css/bootstrap-icons-1.10.5/font/bootstrap-icons.css">
+    <script src="../static/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+
+</head>
+<body>
+    <div class="vh-100 d-flex justify-content-center align-items-center">
+        <div class="container">
+          <div class="row d-flex justify-content-center">
+            <div class="col-12 col-md-8 col-lg-6">
+              <div class="border border-3 border-primary"></div>
+              <div class="card bg-white">
+                <div class="card-body p-5">
+                  <form class="mb-3 mt-md-4" method="POST" action="/login">
+                    <h2 class="fw-bold mb-2">Shopping list</h2>
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <p class=" mb-5">{{ messages[0] }}</p>
+                    {% endif %}
+                    {% endwith %}
+                    
+                    <div class="mb-3">
+                      <label for="email" class="form-label ">Email address</label>
+                      <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com">
+                    </div>
+                    <div class="mb-3">
+                      <label for="password" class="form-label ">Password</label>
+                      <input type="password" class="form-control" id="password" name="password" placeholder="*******">
+                    </div>
+                    <div class="d-grid">
+                      <button class="btn btn-outline-dark" type="submit">Login</button>
+                    </div>
+                  </form>
+                  <!--<div>
+                    <p class="mb-0  text-center">Don't have an account? <a href="signup.html"
+                        class="text-primary fw-bold">Sign
+                        Up</a></p>
+                  </div>-->
+      
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+</body>
+</html>
