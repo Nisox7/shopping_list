@@ -7,3 +7,8 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(100))
     name = db.Column(db.String(1000))
     is_admin = db.Column(db.Boolean(), default=False)
+
+
+class Config(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    registration_enabled = db.Column(db.Boolean, default=False)

@@ -31,9 +31,11 @@
                 <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
                   <a class="btn btn-primary" href="{{ url_for('auth.logout') }}">Logout</a>
                   {% if current_user.is_admin %}
-                      <p>Current register status: X</p>
-                      <button class="btn btn-primary" onclick="doAdminAction()">Turn on registers</button>
-                      <button class="btn btn-primary" onclick="doAdminAction()">Turn off registers</button>
+
+                      <form method="POST" action="{{ url_for('main.admin') }}">
+                        <input type="submit" value="Cambiar estado de registro">
+                        <input type="text" name="torf" value="True or False">
+                    </form>
                   {% endif %}
 
                 </div>

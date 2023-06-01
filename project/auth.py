@@ -3,6 +3,7 @@ from flask import Blueprint, render_template, redirect, url_for, request, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from .models import User
 from . import db
+from .models import Config
 
 auth = Blueprint('auth', __name__)
 
@@ -32,10 +33,18 @@ def login_post():
 
 @auth.route('/signup')
 def signup():
-    return render_template('signup.html')
+    #config = Config.query.first()
+    config = Config.query.order_by(Config.id.desc()).first()
+    if config.registration_enabled:
+        return render_template('signup.html')
+    else:
+        flash('The user registration is disabled')
+        return redirect(url_for('main.index'))
 
 @auth.route('/signup', methods=['POST'])
 def signup_post():
+
+
     # code to validate and add user to database goes here
     email = request.form.get('email')
     name = request.form.get('name')
