@@ -34,8 +34,19 @@ def login_post():
 @auth.route('/signup')
 def signup():
     #config = Config.query.first()
-    config = Config.query.order_by(Config.id.desc()).first()
-    if config.registration_enabled:
+    try:
+        config = Config.query.order_by(Config.id.desc()).first()
+        if config == None:
+            enabled = True
+        elif config.registration_enabled:
+            enabled = True
+        else:
+            enabled = False
+
+    except:
+        enabled = True
+
+    if enabled == True:
         return render_template('signup.html')
     else:
         flash('The user registration is disabled')

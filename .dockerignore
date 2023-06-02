@@ -1,4 +1,3 @@
-create.py
 .venv/
 instance/db.sqlite
 instance/db.sqlite-journal
