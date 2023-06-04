@@ -1,9 +1,13 @@
 //API Connection
-//Get elements
+//Writes the lists from the database
 
-//const apiServerUrl = "http://192.168.0.186:10510";
-//const apiServerUrl = "https://testing_api.linea21.store"; //TESTING
-const apiServerUrl = "https://apimain.linea21.store"; //MAIN
+$(document).ready(function() {
+  $.getJSON('/lists/list', function(datos) {
+      // Manipula los datos en JavaScript
+      writeLists(datos);
+  });
+});
+
 
 //Load lists from db
 
@@ -13,11 +17,6 @@ function writeLists(lists){
     addLists(list,true);
   }
 }
-
-fetch(`${apiServerUrl}/lists/list`)
-  .then(res=>res.json())
-  //.then(res=>console.log(res))
-  .then(res=>writeLists(res))
 
 
 function listOnLocal(list){
@@ -97,35 +96,29 @@ function addLists(listName, addedFromDb){
         console.log("Cargando desde el input")
     
         let jsonValues = {list: listName};
-    
-        jsonBody = JSON.stringify(jsonValues);
-    
-    
-        // Objeto de configuración de la solicitud
-        var requestOptions = {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: jsonBody
-    
-        };
-    
-        // Realizar la solicitud
-    
-    
-        fetch(`${apiServerUrl}/lists/create`, requestOptions)
-          .then(response => response.json())
-          .then(data => {
-            if (data.message == "Received"){ // Manejar la respuesta del servidor
-              showToast(`Added list: ${listName}`);
+
+
+          $.ajax({
+            url: '/lists/create',
+            type: 'POST',
+            data: JSON.stringify(jsonValues),
+            contentType: 'application/json',
+            success: function(response) {
+                // Recibe la respuesta del servidor
+                if (response['message'] == "True"){
+                  showToast(`List ${listName} added`)
+                }
+            },
+            error: function(error) {
+                // Ocurrió un error al enviar los datos
+                console.log(error);
+                showToast(`Error ${error} adding list`)
             }
-          })
-          .catch(error => {
-            console.error('Error:', error);
-            showToast(`Error: ${error}`);
-          });
+        });
+
+
       }
+    
 
   }
 

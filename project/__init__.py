@@ -2,12 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_migrate import Migrate
-
-#Load env file and the secret key from it
-from dotenv import load_dotenv
-import os
-
-secret_key = os.getenv("SECRET_KEY")
+from .env import secret_key
 
 # init SQLAlchemy so we can use it later in our models
 db = SQLAlchemy()

@@ -1,12 +1,5 @@
-//API Connection
-//Get elements
-
-//const apiServerUrl = "http://192.168.0.186:10510";
-//const apiServerUrl = "https://testing_api.linea21.store"; //TESTING
-const apiServerUrl = "https://apimain.linea21.store"; //MAIN
-
 let localList = localStorage.getItem('list');
-console.log(localList);
+//console.log(localList);
 
 let listNameText = document.getElementById("listNameText");
 listNameText.innerText=localList;
@@ -14,46 +7,37 @@ listNameText.innerText=localList;
 let amountItems = 0;
 let textAmountItems = document.getElementById("amount-items");
 
-//GET METHOD
 
-//fetch(`${apiServerUrl}/items`)
-//  .then(res=>res.json())
-//  //.then(res=>console.log(res))
-//  .then(res=>writeElements(res))  
-
-//POST METHOD
+//API Connection
+//Get elements
 
 let jsonValues = {list: localList};
-jsonBody = JSON.stringify(jsonValues);
 
-// Objeto de configuración de la solicitud
-var requestOptions = {
-method: 'POST',
-headers: {
-    'Content-Type': 'application/json'
-},
-body: jsonBody
-};
+$.ajax({
+  url: '/items/list',
+  type: 'POST',
+  data: JSON.stringify(jsonValues),
+  contentType: 'application/json',
+  success: function(response) {
+      // Recibe la respuesta del servidor
+      //console.log(response);
+      if (response['message'] == "True"){
 
-// Realizar la solicitud
-fetch(`${apiServerUrl}/items`, requestOptions)
-    .then(response => response.json())
-    .then(data => {
-      if (data.message == "Received"){ // Manejar la respuesta del servidor
-        console.log("Recibido")
-        for (let i = 0; i < data.elements.length; i++) {
-            let elements = data.elements[i];
-            //console.log(elements); // Imprime cada elemento en la consola
+        for (let i = 0; i < response.elements.length; i++) {
+          let elements = response.elements[i];
+          //console.log(elements); // Imprime cada elemento en la consola
             
-            addElementsToList(elements,true);
-          }
-          
+          addElementsToList(elements,true);
+        }
       }
-    })
-    .catch(error => {
-      console.error('Error:', error);
+  },
+  error: function(error) {
+      // Ocurrió un error al enviar los datos
+      console.log(error);
       showToast(`Error: ${error}`);
-    });
+  }
+});
+
 
 //------------------Theme------------------
 
@@ -117,6 +101,55 @@ function checkSpecialChars(element){
 }
 
 
+
+function loadItem(element,elementId){
+  let jsonValues = {item: element, item_id: `id-${elementId}`, list: localList};
+
+
+  $.ajax({
+    url: '/items/create',
+    type: 'POST',
+    data: JSON.stringify(jsonValues),
+    contentType: 'application/json',
+    success: function(response) {
+        // Recibe la respuesta del servidor
+        if (response['message'] == "True"){
+          showToast(`Added item: ${element}`)
+        }
+    },
+    error: function(error) {
+        // Ocurrió un error al enviar los datos
+        console.log(error);
+        showToast(`Error ${error} adding item`)
+    }
+});
+}
+
+
+function deleteItem(elementId,localList){
+  
+  let jsonValues = {item_id: elementId, list: localList};
+
+
+  $.ajax({
+    url: '/items/delete',
+    type: 'POST',
+    data: JSON.stringify(jsonValues),
+    contentType: 'application/json',
+    success: function(response) {
+        // Recibe la respuesta del servidor
+        console.log(response);
+        if (response['message'] == "True"){
+        }
+    },
+    error: function(error) {
+        // Ocurrió un error al enviar los datos
+        console.log(error);
+    }
+});
+}
+
+
 //--------------------Add elements to the list----------------------
 
 function addElementsToList(element,addedFromDb){
@@ -133,7 +166,7 @@ function addElementsToList(element,addedFromDb){
       elementId = elementId.replaceAll(",","-");
       elementId = elementId.replaceAll("!","-");
 
-      console.log(checkSpecialChars(element));
+      //console.log(checkSpecialChars(element));
     
       //console.log(element);
       completeList = document.querySelector(".list-group");
@@ -152,36 +185,7 @@ function addElementsToList(element,addedFromDb){
     
       if (addedFromDb != true){
         console.log("Cargando desde el input")
-    
-        let jsonValues = {item: element, item_id: `id-${elementId}`, list: localList};
-    
-        jsonBody = JSON.stringify(jsonValues);
-    
-    
-        // Objeto de configuración de la solicitud
-        var requestOptions = {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: jsonBody
-    
-        };
-    
-        // Realizar la solicitud
-    
-    
-        fetch(`${apiServerUrl}/send`, requestOptions)
-          .then(response => response.json())
-          .then(data => {
-            if (data.message == "Received"){ // Manejar la respuesta del servidor
-              showToast(`Added item: ${element}`);
-            }
-          })
-          .catch(error => {
-            console.error('Error:', error);
-            showToast(`Error: ${error}`);
-          });
+        loadItem(element,elementId);
       }
 
       amountItems++;
@@ -217,37 +221,7 @@ function removeCheckedBoxes(){
   for (let checkBoxes of checkBoxesList){
     if (checkBoxes.checked == true){
 
-
-      let jsonValues = {item_id: checkBoxes.id, list: localList};
-
-      jsonBody = JSON.stringify(jsonValues);
-  
-      // Objeto de configuración de la solicitud
-      var requestOptions = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: jsonBody
-  
-      };
-  
-      // Realizar la solicitud
-  
-  
-      fetch(`${apiServerUrl}/delete`, requestOptions)
-        .then(response => response.json())
-        .then(data => {
-          if (data.message == "Received"){ // Manejar la respuesta del servidor
-            console.log("Recibido")
-          }
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          showToast(`Error: ${error}`);
-        });
-
-
+      deleteItem(checkBoxes.id,localList);
 
       //console.log("PRESIONADO:")
       //console.log(checkBoxes.id);
@@ -285,36 +259,28 @@ function removeCheckedBoxes(){
 
 function deleteList(){
     let jsonValues = {list: localList};
-    jsonBody = JSON.stringify(jsonValues);
-    
-    // Objeto de configuración de la solicitud
-    var requestOptions = {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json'
-    },
-    body: jsonBody
-    };
 
-// Realizar la solicitud
-fetch(`${apiServerUrl}/lists/delete`, requestOptions)
-    .then(response => response.json())
-    .then(data => {
-      if (data.message == "Received"){ // Manejar la respuesta del servidor
-        console.log("Recibido");
-        showToast("List deleted. Backing home...")
-        setTimeout(function() {
+    $.ajax({
+      url: '/lists/delete',
+      type: 'POST',
+      data: JSON.stringify(jsonValues),
+      contentType: 'application/json',
+      success: function(response) {
+          // Recibe la respuesta del servidor
+          //console.log(response);
+          if (response['message'] == "True"){
+         showToast("List deleted. Backing home...")
+         setTimeout(function() {
             location.href=indexUrl;
-        }, 2000);
-        
-          
+            }, 2000);
+          }
+      },
+      error: function(error) {
+          // Ocurrió un error al enviar los datos
+          console.log(error);
+          showToast(`Error: ${error}`);
       }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      showToast(`Error: ${error}`);
-    });
-
+  });
 
 }
 
