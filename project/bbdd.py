@@ -1,10 +1,5 @@
 import pymysql
-#from env import database_user,database_host,database_name,database_password
-
-database_host = "192.168.0.166"
-database_user = "root"
-database_password = "78Uf2DG3KrAV2BgFHUPaEC2xG8N9fAeyKKoFyqG"
-database_name = "TEST_SHOPPING_LIST"
+from .env import database_user,database_host,database_name,database_password
 
 def connect():
     try:
