@@ -102,8 +102,8 @@ function checkSpecialChars(element){
 
 
 
-function loadItem(element,elementId){
-  let jsonValues = {item: element, item_id: `id-${elementId}`, list: localList};
+function loadItem(element,elementId,amountItems){
+  let jsonValues = {item: element, item_id: `id-${elementId}`, amount_items: amountItems, list: localList};
 
 
   $.ajax({
@@ -185,13 +185,16 @@ function addElementsToList(element,addedFromDb){
     
       if (addedFromDb != true){
         console.log("Cargando desde el input")
-        loadItem(element,elementId);
+        amountItems++;
+        loadItem(element,elementId,amountItems);
+        textAmountItems.innerText=`${amountItems} items`
+        //console.log(amountItems);
       }
-
-      amountItems++;
-      
-      textAmountItems.innerText=`${amountItems} items` 
-      //console.log(amountItems);
+      else{
+        amountItems++;
+        textAmountItems.innerText=`${amountItems} items`
+        //console.log(amountItems);
+      }
 
   }
 
