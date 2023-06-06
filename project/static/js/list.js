@@ -227,6 +227,8 @@ function removeCheckedBoxes(){
       //console.log(checkBoxes.id);
       let classForRemove = document.querySelector(`.class-${checkBoxes.id}`);
       classForRemove.remove();
+      amountItems --;
+      textAmountItems.innerText=`${amountItems} items`
       amount++;
     }
     else{
@@ -239,14 +241,10 @@ function removeCheckedBoxes(){
     else if (amount ==1){
       showToast(`Deleted ${amount} item`);
       deleteButton();
-      amountItems --;
-      textAmountItems.innerText=`${amountItems} items` 
     }
     else{
       showToast(`Deleted ${amount} items`);
       deleteButton();
-      amountItems --;
-      textAmountItems.innerText=`${amountItems} items` 
     }
     
     
@@ -315,7 +313,9 @@ deleteListButton.addEventListener('click',()=>{
   
     if (clickCount === 1) {
       //deleteListButton.disabled = true;
-      deleteListButton.value = "Are you sure?";
+      deleteListButton.value = `DELETE LIST!`;
+      alert(`You sure to delete ${localList} list?
+This can't be undoed!`);
     } else if (clickCount === 2) {
       // Ejecutar la acción deseada aquí
       deleteList();
@@ -323,6 +323,6 @@ deleteListButton.addEventListener('click',()=>{
       // Restablecer el contador y el estado del botón
       clickCount = 0;
       deleteListButton.disabled = false;
-      deleteListButton.textContent = "Presionar dos veces";
+      deleteListButton.textContent = "Press two times";
     }
 });

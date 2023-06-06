@@ -50,12 +50,24 @@ def admin():
 @main.route('/lists/list')
 @login_required
 def get_tables():
+
+    tables_list=[]
+
     try:
         result = get_tables_from_db()
     except Exception as e:
         result = f"Error getting tables: {e}"
+    
+    tables = read_db("*","AMOUNT_ITEMS")
 
-    return jsonify(result)
+    for table in tables:
+        resultado = {"list": table[0], "amount_items": table[1]}
+        #tables_list.append(table[0])
+        #tables_list.append(table[1])
+        tables_list.append(resultado)
+
+
+    return jsonify(tables_list)
 
 #----Write lists(tables) on db----
 @main.route('/lists/create', methods=['POST'])
@@ -105,7 +117,7 @@ def get_items():
         item = item[0]
         items_list.append(item)
 
-    print(items_list)
+    #print(items_list)
     return jsonify({'message': 'True', 'elements': items_list})
 
 

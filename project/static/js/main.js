@@ -4,7 +4,15 @@
 $(document).ready(function() {
   $.getJSON('/lists/list', function(datos) {
       // Manipula los datos en JavaScript
-      writeLists(datos);
+      for (let i = 0; i < datos.length; i++) {
+        let lists = datos[i];
+        //console.log(elements); // Imprime cada elemento en la consola
+        let list = lists['list'];
+        let amount_items = lists['amount_items'];
+
+        addLists(list, true, amount_items);
+      }
+      
   });
 });
 
@@ -61,9 +69,13 @@ function checkSpecialChars(element){
 
 //-----------------Add lists---------------
 
-function addLists(listName, addedFromDb){
+function addLists(listName, addedFromDb, amountItems){
 
-  if (checkSpecialChars(listName) == true){
+  if (listName=="AMOUNT_ITEMS"){
+    //console.log("Amount ignored");
+  }
+
+  else if (checkSpecialChars(listName) == true){
     showToast("Can't add a list with special characters or spaces!");
   }
   else{
@@ -73,6 +85,17 @@ function addLists(listName, addedFromDb){
       //console.log(element);
       completeList = document.querySelector(".lists-list");
       let newList = document.createElement("DIV");
+
+      if (amountItems==1){
+        elementText = `${amountItems} item`;
+      }
+      else if (amountItems == undefined){
+        elementText = `0 items`;
+      }
+      else{
+        elementText = `${amountItems} items`;
+      }
+      
     
       //console.log(elementId);
     
@@ -81,7 +104,7 @@ function addLists(listName, addedFromDb){
     <div class="card">
       <div class="card-body">
         <h5 class="card-title">${listName}</h5>
-        <p class="card-text"></p>
+        <p class="card-text">${elementText}</p>
         <a href="${listUrl}" class="btn btn-primary" onclick=listOnLocal('${listName}')>See list</a>
       </div>
     </div>
