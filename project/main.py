@@ -1,10 +1,25 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
+from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify, session
 from flask_login import login_required, current_user
 from . import db
 from .models import Config
 from .bbdd import *
 
 main = Blueprint('main', __name__)
+
+@main.before_request
+def before_first_request():
+    if 'first_request_done' not in session:
+        # Realizar aquí la acción deseada
+        print("Executing startup things...")
+        try:
+            execute_on_db(f"CREATE TABLE AMOUNT_ITEMS (LIST VARCHAR(100), AMOUNT INT);")
+            print("Amount items created")
+        except Exception as e:
+            print(f"Error creating amount_items: {e}")
+        
+        
+        session['first_request_done'] = True
+
 
 @main.route('/')
 @login_required
