@@ -127,13 +127,27 @@ def get_items():
     table = request.get_json()
     table = table['list']
 
-    items = read_db("ITEM", table)
-    for item in items:
-        item = item[0]
-        items_list.append(item)
+    items = read_db("*", table)
+    #print(items[0])
 
-    #print(items_list)
+    for things in items:
+        total_items_list=[]
+
+        item = things[1]
+        item_checked = things[2]
+
+        print(item)
+        print(item_checked)
+
+        total_items_list.append(item)
+        total_items_list.append(item_checked)
+
+        items_list.append(total_items_list)
+    
+    print(items_list)
+
     return jsonify({'message': 'True', 'elements': items_list})
+    #return jsonify({'message': 'True'})
 
 
 #----Write items on db----
@@ -169,4 +183,28 @@ def delete_item():
     except Exception as e:
         result = {'message':f"Error writing: {e}"}
     
+    return result
+
+#----Delete items on db----
+@main.route('/items/checked', methods=['POST'])
+@login_required
+def items_checked():
+    data = request.get_json()
+
+    try:
+        local_list = data['list']
+
+        checked_items = data['changes']
+
+        for item in checked_items:
+            item_id = (item)
+            status = (checked_items[item])
+
+            item_checked(item_id,status,local_list)
+
+        result={'message':'True'}
+
+    except:
+        result={'message':'False'}
+        
     return result

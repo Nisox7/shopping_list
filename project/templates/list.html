@@ -76,11 +76,15 @@
 
         </ul>
 
-        <div class="container col text-end">
+        <div class="container col text-end" id="container-bottom-list">
           <br>
-          <button class="btn btn-outline-danger" type="button" id="buttons-delete" hidden><i class="bi bi-trash3-fill"></i></button></div>
-        
-    </div>
+          
+          <button class="btn btn-outline-primary" type="button" id="save-button">
+            <i class="bi bi-save"></i>
+          </button>
+          
+          <button class="btn btn-outline-danger" type="button" id="buttons-delete"><i class="bi bi-trash3-fill"></i></button></div>
+        </div>
 
     <div class="buttons-container text-center">
       <a href="{{ url_for('main.index') }}"><input class="btn btn-outline-primary btn" id="buttons-back" type="submit" value="Back home"></a>

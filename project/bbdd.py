@@ -60,7 +60,12 @@ def create_table_db(table):
     cursor=ddbb[1]
 
     try:
-        cursor.execute(f"CREATE TABLE {table} (ITEM_ID VARCHAR(350), ITEM VARCHAR(350), TS TIMESTAMP DEFAULT current_timestamp);")
+        cursor.execute(f"""CREATE TABLE {table} (
+                       ITEM_ID VARCHAR(350), 
+                       ITEM VARCHAR(350), 
+                       ITEM_CHECKED BOOLEAN, 
+                       TS TIMESTAMP DEFAULT current_timestamp
+                       );""")
         print(f"created table: {table}")
 
         cursor.execute(f"INSERT INTO AMOUNT_ITEMS VALUES ('{table}',0)")
@@ -162,7 +167,7 @@ def write_db(item, item_id, database_table):
     cursor=ddbb[1]
 
     try:
-        cursor.execute(f"INSERT INTO {database_table} VALUES ('{item_id}','{item}',DEFAULT)")
+        cursor.execute(f"INSERT INTO {database_table} VALUES ('{item_id}','{item}',False,DEFAULT)")
         connection.commit()
         #print("db written correctly")
         connection.close()
@@ -208,3 +213,17 @@ def delete_from_db(item_id, database_table):
 
     except Exception as e:
         print(f"error deleting item on db:\n{e}")
+
+
+#--------------Update if item checked or not on corresponding table (list)--------------
+
+def item_checked(item_id,status,database_table):
+    ddbb = connect()
+    connection=ddbb[0]
+    cursor=ddbb[1]
+
+    cursor.execute(f"UPDATE {database_table} SET ITEM_CHECKED = {status} WHERE ITEM_ID = '{item_id}'")
+
+    connection.commit()
+
+    connection.close()
