@@ -430,22 +430,9 @@ let clickCount=0;
 const deleteListButton = document.getElementById("buttons-list-delete");
 
 deleteListButton.addEventListener('click',()=>{
-    clickCount++;
-  
-    if (clickCount === 1) {
-      //deleteListButton.disabled = true;
-      deleteListButton.value = `DELETE LIST!`;
-      alert(`You sure to delete ${localList} list?
-This can't be undoed!`);
-    } else if (clickCount === 2) {
-      // Ejecutar la acción deseada aquí
-      deleteList();
-      
-      // Restablecer el contador y el estado del botón
-      clickCount = 0;
-      deleteListButton.disabled = false;
-      deleteListButton.textContent = "Press two times";
-    }
+
+  deleteList();
+
 });
 
 
