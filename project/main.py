@@ -34,6 +34,7 @@ def lists():
 
 
 @main.route('/admin', methods=['GET', 'POST'])
+@login_required
 def admin():
     if request.method == 'POST':
         # Verificar si el usuario es un administrador (puedes utilizar Flask-Login o tu propio mecanismo de autenticación)
@@ -54,9 +55,13 @@ def admin():
 
             flash('El estado del registro ha sido actualizado.')
             return redirect(url_for('main.admin'))
-
-    config = Config.query.first()
-    return render_template('admin.html', registration_enabled=config.registration_enabled)
+            
+    if current_user.is_admin:
+        config = Config.query.first()
+        return render_template('admin.html', registration_enabled=config.registration_enabled)
+    else:
+        config = Config.query.first()
+        return render_template('nopermission.html', registration_enabled=config.registration_enabled)      
 
 
 #-------------------LISTS-------------------
