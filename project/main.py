@@ -16,6 +16,12 @@ def before_first_request():
             print("Amount items created")
         except Exception as e:
             print(f"Error creating amount_items: {e}")
+
+        #try:
+            #db.create_all()
+        #    print("DB CREATE ALL")
+        #except Exception as e:
+        #    print("error: ",e)
         
         
         session['first_request_done'] = True

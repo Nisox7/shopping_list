@@ -7,6 +7,7 @@ from .models import Config
 
 auth = Blueprint('auth', __name__)
 
+
 @auth.route('/login')
 def login():
     return render_template('login.html')
@@ -55,18 +56,14 @@ def signup():
 @auth.route('/signup', methods=['POST'])
 def signup_post():
 
-
     # code to validate and add user to database goes here
     email = request.form.get('email')
     name = request.form.get('name')
     password = request.form.get('password')
 
-    if email == "nicomuller2704@gmail.com":
-        is_admin=True
-    else:
-        is_admin=False
-
     user = User.query.filter_by(email=email).first() # if this returns a user, then the email already exists in database
+
+    is_admin=False
 
     if user: # if a user is found, we want to redirect back to signup page so user can try again
         flash('Email address already exists')
@@ -86,3 +83,13 @@ def signup_post():
 def logout():
     logout_user()
     return redirect(url_for('main.index'))
+
+
+
+def db_setup(email,name,password,is_admin):
+    
+    admin_user = User(email=email, name=name, password=generate_password_hash(password, method='sha256'),is_admin=is_admin)
+
+    # add the new user to the database
+    db.session.add(admin_user)
+    db.session.commit()
