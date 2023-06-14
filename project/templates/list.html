@@ -21,9 +21,9 @@
 
       <nav class="navbar bg-body-tertiary shadow p-3 mb-5 bg-body-tertiary rounded">
         <div class="container-fluid">
-
+    
          <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions"><i class="bi bi-list fs-2"></i></button>
-
+    
          <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
            <div class="offcanvas-header">
              <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Menu</h5>
@@ -32,28 +32,35 @@
            <div class="offcanvas-body">
              <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
                <a class="btn btn-primary" href="{{ url_for('auth.logout') }}">Logout</a>
+    
+               <a class="btn btn-secondary" href="{{ url_for('main.profile') }}">Profile</a>
+               
+               {% if current_user.is_admin %}
+               <a class="btn btn-info" href="{{ url_for('main.admin') }}">Admin console</a>
+               {% endif %}
+    
              </div>
            </div>
          </div>
-              <!--<img src="../static/img/shopping-list.png" alt="Logo" width="30" height="24" class="">-->
-              <a class="navbar-brand" href="{{ url_for('main.index') }}">Shopping list</a>
-
-              <div class="" id="navbarNavDropdown">
-                <ul>
-                  <div class="dropdown">
-                    <a class="btn btn-link nav-link py-2 px-0 px-lg-2 dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-sun"> Theme</i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <button type="button" class="btn" id="switchThemeLight">Light</button>
-                        <button type="button" class="btn" id="switchThemeDark">Dark</button>
-                    </ul>
-                  </div>
+          <!--<img src="../static/img/shopping-list.png" alt="Logo" width="30" height="24" class="">-->
+          <a class="navbar-brand" href="{{ url_for('main.index') }}">Shopping list</a>
+    
+          <div class="" id="navbarNavDropdown">
+            <ul>
+              <div class="dropdown">
+                <a class="btn btn-link nav-link py-2 px-0 px-lg-2 dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-sun"> Theme</i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <button type="button" class="btn" id="switchThemeLight">Light</button>
+                    <button type="button" class="btn" id="switchThemeDark">Dark</button>
                 </ul>
               </div>
-
-            </div>
-          </nav>
+            </ul>
+          </div>
+    
+        </div>
+      </nav>
 
     </div>
 
@@ -90,7 +97,7 @@
       <a href="{{ url_for('main.index') }}"><input class="btn btn-outline-primary btn" id="buttons-back" type="submit" value="Back home"></a>
       <!--<input class="btn btn-outline-danger btn-sm" id="buttons-delete" type="submit" value="Delete selected" hidden> THJIS IS THE OLD DELETE BUTTOn-->
       <!--<input class="btn btn-outline-danger" id="buttons-list-delete" type="submit" value="Delete list!">-->
-      <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteListModal">
         Delete list
       </button>
     </div>
@@ -98,11 +105,11 @@
     <div class="container">
 
       <!-- Modal -->
-      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal fade" id="deleteListModal" tabindex="-1" aria-labelledby="deleteListModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h1 class="modal-title fs-5" id="exampleModalLabel">Delete list</h1>
+              <h1 class="modal-title fs-5" id="deleteListModalLabel">Delete list</h1>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -135,7 +142,8 @@
         </div>
 
     </div>
-    <script>var indexUrl = "{{ url_for('main.index') }}";</script>
-    <script src='../static/js/list.js'></script>
+  <script src='../static/js/toggle_theme.js'></script>
+  <script>var indexUrl = "{{ url_for('main.index') }}";</script>
+  <script src='../static/js/list.js'></script>
 </body>
 </html>

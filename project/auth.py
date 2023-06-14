@@ -1,4 +1,4 @@
-from flask_login import login_user, login_required, logout_user
+from flask_login import login_user, login_required, logout_user, current_user
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from .models import User
@@ -17,7 +17,7 @@ def login_post():
    # login code goes here
     email = request.form.get('email')
     password = request.form.get('password')
-    remember = True if request.form.get('remember') else False
+    remember = True if request.form.get('remember') else True #THIS MUST BE FALSE
 
     user = User.query.filter_by(email=email).first()
 
@@ -85,6 +85,109 @@ def logout():
     return redirect(url_for('main.index'))
 
 
+@auth.route('/change_password')
+@login_required
+def change_password():
+    return render_template('change_password.html')
+
+
+@auth.route('/change_password', methods=['POST'])
+@login_required
+def change_password_post():
+
+    email = current_user.email
+    actual_password = request.form.get('actual-password')
+    password1 = request.form.get('new-password')
+    password2 = request.form.get('confirm-password')
+
+    user = User.query.filter_by(email=email).first()
+
+    # check if the user actually exists
+    # take the user-supplied password, hash it, and compare it to the hashed password in the database
+    if not user or not check_password_hash(user.password, actual_password):
+        flash('Password incorrect') 
+    else:
+    
+        if password1 == password2:
+
+            #Logic for change password
+            user.password = generate_password_hash(password1, method='sha256')
+            db.session.commit()
+            flash('Password changed succesfully')
+
+        
+        else:
+            flash('Passwords do not match')
+
+    return redirect(url_for('main.profile'))
+
+
+@auth.route('/profile/edit', methods=['POST'])
+@login_required
+def profile_edit():
+
+
+    current_email = current_user.email
+    new_email =  request.form.get('email')
+    new_name = request.form.get('name')
+
+    try:
+        user = User.query.filter_by(email=current_email).first()
+
+        user.email = new_email
+        user.name = new_name
+        
+        db.session.commit()
+
+        flash("Changes saved")
+    except:
+        flash("Error saving the changes")
+
+    return redirect(url_for('main.profile'))
+
+@auth.route('/users/edit', methods=['POST'])
+@login_required
+def users_edit():
+
+    user_id = request.form.get('userIdInput')
+    new_email =  request.form.get('emailInput')
+    new_name = request.form.get('nameInput')
+    is_admin = request.form.get('adminInput')
+
+    if is_admin == 'on':
+        is_admin=True
+    else:
+        is_admin=False
+
+    try:
+        user = User.query.filter_by(id=user_id).first()
+
+        user.email = new_email
+        user.name = new_name
+        user.is_admin = is_admin
+        
+        db.session.commit()
+
+        flash("Changes saved")
+    except:
+        flash("Error saving the changes")
+
+    return redirect(url_for('main.admin'))
+
+@auth.route('/users/delete', methods=['POST'])
+@login_required
+def users_delete():
+
+    user_id = request.form.get('deleteUserIdInput')
+    print(user_id)
+    try:
+        User.query.filter_by(id=user_id).delete()
+        db.session.commit()
+        flash("User deleted")
+    except:
+        flash("Error deleting user")
+
+    return redirect(url_for('main.admin'))
 
 def db_setup(email,name,password,is_admin):
     

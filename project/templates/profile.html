@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <title>Shopping list</title>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <!--    <link rel='stylesheet' type='text/css' media='screen' href='css/main.css'> -->
+  <link href="../static/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+  <link rel="stylesheet" href="../static/css/bootstrap-icons-1.10.5/font/bootstrap-icons.css">
+  <script src="../static/js/bootstrap.bundle.min.js"
+    integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+    crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="../static/css/profile.css">
+
+</head>
+
+<html>
+
+</html>
+
+<div class="container">
+
+
+  <nav class="navbar bg-body-tertiary shadow p-3 mb-5 bg-body-tertiary rounded">
+    <div class="container-fluid">
+
+      <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
+        aria-controls="offcanvasWithBothOptions"><i class="bi bi-list fs-2"></i></button>
+
+      <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions"
+        aria-labelledby="offcanvasWithBothOptionsLabel">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Menu</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+          <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
+            <a class="btn btn-primary" href="{{ url_for('auth.logout') }}">Logout</a>
+
+            <a class="btn btn-secondary" href="{{ url_for('main.profile') }}">Profile</a>
+
+            {% if current_user.is_admin %}
+            <a class="btn btn-info" href="{{ url_for('main.admin') }}">Admin console</a>
+            {% endif %}
+
+          </div>
+        </div>
+      </div>
+      <!--<img src="../static/img/shopping-list.png" alt="Logo" width="30" height="24" class="">-->
+      <a class="navbar-brand" href="{{ url_for('main.index') }}">Shopping list</a>
+
+      <div class="" id="navbarNavDropdown">
+        <ul>
+          <div class="dropdown">
+            <a class="btn btn-link nav-link py-2 px-0 px-lg-2 dropdown-toggle d-flex align-items-center" href="#"
+              role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-sun"> Theme</i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <button type="button" class="btn" id="switchThemeLight">Light</button>
+              <button type="button" class="btn" id="switchThemeDark">Dark</button>
+            </ul>
+          </div>
+        </ul>
+      </div>
+
+    </div>
+  </nav>
+
+
+
+  <div class="main-body d-flex justify-content-center">
+    <div class="col-md-8 w-100 p-3">
+      <div class="card mb-3">
+        <div class="card-body">
+          <div class="d-flex flex-column align-items-center text-center">
+            <!--<img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150">-->
+            <div class="mt-3">
+              <h4>Profile</h4>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-3">
+              <h6 class="mb-0">Name</h6>
+            </div>
+            <div class="col-sm-9">
+              {{ name }}
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-sm-3">
+              <h6 class="mb-0">Email</h6>
+            </div>
+            <div class="col-sm-9">
+              {{ email }}
+            </div>
+          </div>
+          <hr>
+
+          <div class="container text-center">
+            <div class="row justify-content-end">
+              <div class="col-sm-4">
+                <a class="btn btn-info" href="#" data-bs-toggle="modal" data-bs-target="#changeUserModal">Edit</a>
+                <a class="btn btn-danger" href="#" data-bs-toggle="modal" data-bs-target="#changePasswordModal">Change
+                  password</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+      <div class="container text-center">
+        <div class="row justify-content-center">
+          <div class="col-sm-4">
+            <a href="{{ url_for('main.index') }}"><input class="btn btn-primary btn" id="buttons-back" type="submit"
+                value="Back home"></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="container text-center">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <br>
+    <p class="mb-5" style="color:red;">{{ messages[0] }}</p>
+    {% endif %}
+    {% endwith %}
+  </div>
+
+  <div class="container">
+
+    <!-- change password modal -->
+    <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="changePasswordModalLabel">Change password</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form method="POST" action="/change_password">
+            <div class="modal-body">
+              <div class="row mb-3">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Actual password</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  <input type="password" class="form-control" id="actual-password" name="actual-password"
+                    placeholder="****" required>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">New password</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  <input type="password" class="form-control" id="new-password" name="new-password"
+                    placeholder="*******" required>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Confirm password</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  <input type="password" class="form-control" id="confirm-password" name="confirm-password"
+                    placeholder="*******" required>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-danger" id="buttons-change-password">Save changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- change user modal -->
+    <div class="modal fade" id="changeUserModal" tabindex="-1" aria-labelledby="changeUserModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="changeUserModalLabel">Edit user</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form method="POST" action="/profile/edit">
+            <div class="modal-body">
+              <div class="row mb-3">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">New name</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  <input type="text" class="form-control" id="name" name="name" value="{{ name }}" required>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">New email</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  <input type="email" class="form-control" id="email" name="email" value="{{ email }}" required>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-info" id="buttons-change-user">Save changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src='../static/js/profile.js'></script>

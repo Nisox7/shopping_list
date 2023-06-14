@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify, session
 from flask_login import login_required, current_user
 from . import db
-from .models import Config
+from .models import Config, User
 from .bbdd import *
 
 main = Blueprint('main', __name__)
@@ -63,8 +63,23 @@ def admin():
             return redirect(url_for('main.admin'))
             
     if current_user.is_admin:
+
+
         config = Config.query.first()
-        return render_template('admin.html', registration_enabled=config.registration_enabled)
+        users = User.query.all()
+
+
+        action = f"""
+<a href="#" id=
+class="btn btn-success btn-sm rounded-pill py-0 editLink"
+data-bs-toggle="modal" data-bs-target="#changeUserModal">Edit</a>
+                      
+<a href="#" id
+class="btn btn-danger btn-sm rounded-pill py-0 deleteLink">Delete</a>
+"""
+
+
+        return render_template('admin.html', registration_enabled=config.registration_enabled, users=users)
     else:
         config = Config.query.first()
         return render_template('nopermission.html', registration_enabled=config.registration_enabled)      
@@ -219,3 +234,12 @@ def items_checked():
         result={'message':'False'}
         
     return result
+
+
+
+
+@main.route('/profile')
+@login_required
+def profile():
+    return render_template('profile.html', name=current_user.name, email=current_user.email)
+

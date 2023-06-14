@@ -31,12 +31,11 @@
               <div class="offcanvas-body">
                 <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
                   <a class="btn btn-primary" href="{{ url_for('auth.logout') }}">Logout</a>
-                  {% if current_user.is_admin %}
 
-                      <form method="POST" action="{{ url_for('main.admin') }}">
-                        <input type="submit" value="Cambiar estado de registro">
-                        <input type="text" name="torf" value="True or False">
-                    </form>
+                  <a class="btn btn-secondary" href="{{ url_for('main.profile') }}">Profile</a>
+                  
+                  {% if current_user.is_admin %}
+                  <a class="btn btn-info" href="{{ url_for('main.admin') }}">Admin console</a>
                   {% endif %}
 
                 </div>
@@ -101,7 +100,8 @@
       </div>
     </div>
 
-</div>
+  </div>
+  <script src='../static/js/toggle_theme.js'></script>
   <script>var listUrl = "{{ url_for('main.lists') }}";</script>
   <script src='../static/js/main.js'></script>
 </body>
