@@ -1,4 +1,4 @@
-#v1.0
+#v1.0.5
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
