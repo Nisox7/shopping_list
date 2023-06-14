@@ -79,10 +79,10 @@ class="btn btn-danger btn-sm rounded-pill py-0 deleteLink">Delete</a>
 """
 
 
-        return render_template('admin.html', registration_enabled=config.registration_enabled, users=users)
+        return render_template('admin.html', users=users)
     else:
         config = Config.query.first()
-        return render_template('nopermission.html', registration_enabled=config.registration_enabled)      
+        return render_template('nopermission.html')      
 
 
 #-------------------LISTS-------------------
