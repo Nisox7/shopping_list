@@ -25,51 +25,59 @@
 <div class="container">
 
 
-  <nav class="navbar bg-body-tertiary shadow p-3 mb-5 bg-body-tertiary rounded">
-    <div class="container-fluid">
+  <nav
+  class="navbar bg-body-tertiary shadow p-3 mb-5 bg-body-tertiary rounded">
+  <div class="container-fluid">
 
-      <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
-        aria-controls="offcanvasWithBothOptions"><i class="bi bi-list fs-2"></i></button>
+    <button class="btn" type="button" data-bs-toggle="offcanvas"
+      data-bs-target="#offcanvasWithBothOptions"
+      aria-controls="offcanvasWithBothOptions"><i class="bi bi-list fs-2"></i></button>
 
-      <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions"
-        aria-labelledby="offcanvasWithBothOptionsLabel">
-        <div class="offcanvas-header">
-          <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Menu</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body">
-          <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
-            <a class="btn btn-primary" href="{{ url_for('auth.logout') }}">Logout</a>
+    <div class="offcanvas offcanvas-start" data-bs-scroll="true"
+      tabindex="-1" id="offcanvasWithBothOptions"
+      aria-labelledby="offcanvasWithBothOptionsLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Menu</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
+          aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <div class="btn-group-vertical" role="group"
+          aria-label="Vertical button group">
+          <a class="btn btn-primary" href="{{ url_for('auth.logout') }}">Logout</a>
 
-            <a class="btn btn-secondary" href="{{ url_for('main.profile') }}">Profile</a>
+          <a class="btn btn-secondary" href="{{ url_for('main.profile') }}">Profile</a>
 
-            {% if current_user.is_admin %}
-            <a class="btn btn-info" href="{{ url_for('main.admin') }}">Admin console</a>
-            {% endif %}
+          {% if current_user.is_admin %}
+          <a class="btn btn-info" href="{{ url_for('main.admin') }}">Admin
+            console</a>
+          {% endif %}
 
-          </div>
         </div>
       </div>
-      <!--<img src="../static/img/shopping-list.png" alt="Logo" width="30" height="24" class="">-->
-      <a class="navbar-brand" href="{{ url_for('main.index') }}">Shopping list</a>
-
-      <div class="" id="navbarNavDropdown">
-        <ul>
-          <div class="dropdown">
-            <a class="btn btn-link nav-link py-2 px-0 px-lg-2 dropdown-toggle d-flex align-items-center" href="#"
-              role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="bi bi-sun"> Theme</i>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end">
-              <button type="button" class="btn" id="switchThemeLight">Light</button>
-              <button type="button" class="btn" id="switchThemeDark">Dark</button>
-            </ul>
-          </div>
-        </ul>
-      </div>
-
     </div>
-  </nav>
+    <!--<img src="../static/img/shopping-list.png" alt="Logo" width="30" height="24" class="">-->
+    <a class="navbar-brand" href="{{ url_for('main.index') }}">Shopping list</a>
+
+    <div class id="navbarNavDropdown">
+      <ul>
+        <div class="dropdown">
+          <a
+            class="btn btn-link nav-link py-2 px-0 px-lg-2 dropdown-toggle d-flex align-items-center"
+            href="#" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            <i class="bi bi-sun"> Theme</i>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <button type="button" class="btn" id="switchThemeLight">Light</button>
+            <button type="button" class="btn" id="switchThemeDark">Dark</button>
+          </ul>
+        </div>
+      </ul>
+    </div>
+
+  </div>
+</nav>
 
 
 
@@ -103,7 +111,7 @@
           <hr>
 
           <div class="container text-center">
-            <div class="row justify-content-end">
+            <div class="row justify-content-center">
               <div class="col-sm-4">
                 <a class="btn btn-info" href="#" data-bs-toggle="modal" data-bs-target="#changeUserModal">Edit</a>
                 <a class="btn btn-danger" href="#" data-bs-toggle="modal" data-bs-target="#changePasswordModal">Change
