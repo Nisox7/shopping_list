@@ -1,6 +1,5 @@
 .venv/
-instance/db.sqlite
-instance/db.sqlite-journal
+instance/
 .env
 project/__pycache__/
 migrations/
