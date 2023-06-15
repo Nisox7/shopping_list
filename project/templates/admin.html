@@ -80,6 +80,20 @@
           <div>
             <h4 class="text-primary">All users in the database</h4>
           </div>
+          <div>
+            <div class="form-check form-switch">
+              <input class="form-check-input"
+                type="checkbox" 
+                role="switch" 
+                id="registersInput" 
+                name="registersInput" 
+                onclick="userRegisterBtnClicked()"
+                data-register-status="{{ registration_enabled }}">
+              <label class="form-check-label"
+              id="registersLabel"
+              for="registersInput">User register</label>
+            </div>
+          </div>
         </div>
       </div>
       <hr>
@@ -216,6 +230,23 @@
     </div>
 
 
+    <div class="toast-container">
+
+      <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-animation="true", data-bs-delay=3000>
+          <div class="toast-header">
+            <img src="../static/img/shopping-list.png" class="rounded me-2" style="width: 20px;" alt="...">
+            <strong class="me-auto">Notification</strong>
+            <small>Now</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+          <div class="toast-body" id="toastBodyText">
+              TEXT
+          </div>
+        </div>
+      </div>
+
+  </div>
 
 
 

@@ -36,53 +36,41 @@ def index():
 @login_required
 def lists():
     #return render_template('list.html')
-    return render_template('list.html', name=current_user.name)
+    return render_template('list.html', name=current_user.name)  
 
 
-@main.route('/admin', methods=['GET', 'POST'])
+@main.route('/admin')
 @login_required
 def admin():
-    if request.method == 'POST':
-        # Verificar si el usuario es un administrador (puedes utilizar Flask-Login o tu propio mecanismo de autenticación)
-        if current_user.is_admin:
-
-            str_state = request.form.get('torf')
-
-            if str_state == "True":
-                state = True
-            elif str_state == "False":
-                state = False
-            else:
-                state = False
-
-            config = Config(registration_enabled=state)
-            db.session.add(config)
-            db.session.commit()
-
-            flash('El estado del registro ha sido actualizado.')
-            return redirect(url_for('main.admin'))
-            
     if current_user.is_admin:
-
-
-        config = Config.query.first()
+        
+        config = Config.query.order_by(Config.id.desc()).first()
         users = User.query.all()
 
-
-        action = f"""
-<a href="#" id=
-class="btn btn-success btn-sm rounded-pill py-0 editLink"
-data-bs-toggle="modal" data-bs-target="#changeUserModal">Edit</a>
-                      
-<a href="#" id
-class="btn btn-danger btn-sm rounded-pill py-0 deleteLink">Delete</a>
-"""
-
-
-        return render_template('admin.html', users=users)
+        return render_template('admin.html', users=users, registration_enabled=config.registration_enabled)
     else:
-        config = Config.query.first()
-        return render_template('nopermission.html')      
+        return render_template('nopermission.html')  
+
+
+
+@main.route('/admin/register', methods=['POST'])
+@login_required
+def admin_change_permission():
+
+    if current_user.is_admin:
+
+        response = request.get_json()
+
+        state = response['buttonStatus']
+
+        print(state)
+
+        config = Config(registration_enabled=state)
+        db.session.add(config)
+        db.session.commit()
+
+        return jsonify(state)
+
 
 
 #-------------------LISTS-------------------
