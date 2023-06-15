@@ -1,257 +1,243 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Shopping list admin</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <!--    <link rel='stylesheet' type='text/css' media='screen' href='css/main.css'> -->
-    <link href="../static/css/bootstrap.min.css" rel="stylesheet"
-      integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
-      crossorigin="anonymous">
-    <link rel="stylesheet"
-      href="../static/css/bootstrap-icons-1.10.5/font/bootstrap-icons.css">
-    <script src="../static/js/bootstrap.bundle.min.js"
-      integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
-      crossorigin="anonymous"></script>
-    <script
-      src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-  </head>
-  <body>
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <title>Shopping list admin</title>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <!--    <link rel='stylesheet' type='text/css' media='screen' href='css/main.css'> -->
+  <link href="../static/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+  <link rel="stylesheet" href="../static/css/bootstrap-icons-1.10.5/font/bootstrap-icons.css">
+  <script src="../static/js/bootstrap.bundle.min.js"
+    integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+    crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-    <nav
-      class="navbar bg-body-tertiary shadow p-3 mb-5 bg-body-tertiary rounded">
-      <div class="container-fluid">
+</head>
 
-        <button class="btn" type="button" data-bs-toggle="offcanvas"
-          data-bs-target="#offcanvasWithBothOptions"
-          aria-controls="offcanvasWithBothOptions"><i class="bi bi-list fs-2"></i></button>
+<body>
 
-        <div class="offcanvas offcanvas-start" data-bs-scroll="true"
-          tabindex="-1" id="offcanvasWithBothOptions"
-          aria-labelledby="offcanvasWithBothOptionsLabel">
-          <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Menu</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
-              aria-label="Close"></button>
-          </div>
-          <div class="offcanvas-body">
-            <div class="btn-group-vertical" role="group"
-              aria-label="Vertical button group">
-              <a class="btn btn-primary" href="{{ url_for('auth.logout') }}">Logout</a>
+  <nav class="navbar bg-body-tertiary shadow p-3 mb-5 bg-body-tertiary rounded">
+    <div class="container-fluid">
 
-              <a class="btn btn-secondary" href="{{ url_for('main.profile') }}">Profile</a>
+      <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
+        aria-controls="offcanvasWithBothOptions"><i class="bi bi-list fs-2"></i></button>
 
-              {% if current_user.is_admin %}
-              <a class="btn btn-info" href="{{ url_for('main.admin') }}">Admin
-                console</a>
-              {% endif %}
-
-            </div>
-          </div>
+      <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions"
+        aria-labelledby="offcanvasWithBothOptionsLabel">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Menu</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
-        <!--<img src="../static/img/shopping-list.png" alt="Logo" width="30" height="24" class="">-->
-        <a class="navbar-brand" href="{{ url_for('main.index') }}">Shopping list</a>
+        <div class="offcanvas-body">
+          <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
 
-        <div class id="navbarNavDropdown">
-          <ul>
-            <div class="dropdown">
-              <a
-                class="btn btn-link nav-link py-2 px-0 px-lg-2 dropdown-toggle d-flex align-items-center"
-                href="#" role="button" data-bs-toggle="dropdown"
-                aria-expanded="false">
-                <i class="bi bi-sun"> Theme</i>
-              </a>
-              <ul class="dropdown-menu dropdown-menu-end">
-                <button type="button" class="btn" id="switchThemeLight">Light</button>
-                <button type="button" class="btn" id="switchThemeDark">Dark</button>
-              </ul>
-            </div>
-          </ul>
-        </div>
+            <a class="btn btn-secondary" href="{{ url_for('main.index') }}">Home</a>
 
-      </div>
-    </nav>
+            <a class="btn btn-secondary" href="{{ url_for('main.profile') }}">Profile</a>
 
-    <div class="container">
-      <div class="row mt-4">
-        <div class="col-lg-12 d-flex justify-content-between align-items-center">
-          <div>
-            <h4 class="text-primary">All users in the database</h4>
-          </div>
-          <div>
-            <div class="form-check form-switch">
-              <input class="form-check-input"
-                type="checkbox" 
-                role="switch" 
-                id="registersInput" 
-                name="registersInput" 
-                onclick="userRegisterBtnClicked()"
-                data-register-status="{{ registration_enabled }}">
-              <label class="form-check-label"
-              id="registersLabel"
-              for="registersInput">User register</label>
-            </div>
+            {% if current_user.is_admin %}
+            <a class="btn btn-secondary" href="{{ url_for('main.admin') }}">Admin
+              console</a>
+            {% endif %}
+
+            <a class="btn btn-warning" href="{{ url_for('auth.logout') }}">Logout</a>
+
           </div>
         </div>
       </div>
-      <hr>
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="table-responsive">
-            <table class="table table-striped table-bordered text-center">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Name</th>
-                  <th>E-mail</th>
-                  <th>Admin</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for user in users %}
-                <tr>
-                  <td>{{ user.id }}</td>
-                  <td>{{ user.name }}</td>
-                  <td>{{ user.email }}</td>
-                  <td>{{ user.is_admin }}</td>
-                  <td>
-                    <a href="#" id="editLink_{{ user.id }}"
-                    class="btn btn-success btn-sm rounded-pill py-0 editLink"
-                    data-user-id="{{ user.id }}"
-                    data-user-admin="{{ user.is_admin }}"
-                    data-user-name="{{ user.name }}"
+      <!--<img src="../static/img/shopping-list.png" alt="Logo" width="30" height="24" class="">-->
+      <a class="navbar-brand" href="{{ url_for('main.index') }}">Shopping list</a>
+
+      <div class id="navbarNavDropdown">
+        <ul>
+          <div class="dropdown">
+            <a class="btn btn-link nav-link py-2 px-0 px-lg-2 dropdown-toggle d-flex align-items-center" href="#"
+              role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-sun"> Theme</i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <button type="button" class="btn" id="switchThemeLight">Light</button>
+              <button type="button" class="btn" id="switchThemeDark">Dark</button>
+            </ul>
+          </div>
+        </ul>
+      </div>
+
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="row mt-4">
+      <div class="col-lg-12 d-flex justify-content-between align-items-center">
+        <div>
+          <h4 class="text-primary">All users in the database</h4>
+        </div>
+        <div>
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" id="registersInput" name="registersInput"
+              onclick="userRegisterBtnClicked()" data-register-status="{{ registration_enabled }}">
+            <label class="form-check-label" id="registersLabel" for="registersInput">User register</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="table-responsive">
+          <table class="table table-striped table-bordered text-center">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>E-mail</th>
+                <th>Admin</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for user in users %}
+              <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.is_admin }}</td>
+                <td>
+                  <a href="#" id="editLink_{{ user.id }}" class="btn btn-success btn-sm rounded-pill py-0 editLink"
+                    data-user-id="{{ user.id }}" data-user-admin="{{ user.is_admin }}" data-user-name="{{ user.name }}"
                     data-user-email="{{ user.email }}">Edit</a>
 
-                    <button id="deleteLink_{{ user.id }}"
-                      class="btn btn-danger btn-sm rounded-pill py-0 deleteLink"
-                      value="{{ user.id }}"
-                      data-user-id="{{ user.id }}"
-                      data-user-email="{{ user.email }}">Delete</a></td>
-                    
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
+                  <button id="deleteLink_{{ user.id }}" class="btn btn-danger btn-sm rounded-pill py-0 deleteLink"
+                    value="{{ user.id }}" data-user-id="{{ user.id }}" data-user-email="{{ user.email }}">Delete</a>
+                </td>
+
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
-  
-    
-
-    <div class="container text-center">
-      {% with messages = get_flashed_messages() %}
-      {% if messages %}
-      <br>
-      <p class="mb-5" style="color:red;">{{ messages[0] }}</p>
-      {% endif %}
-      {% endwith %}
-    </div>
+  </div>
 
 
-    <div class="container">
 
-      <!-- change user modal -->
-      <div class="modal fade" id="changeUserModal" tabindex="-1" aria-labelledby="changeUserModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="changeUserModalLabel">Edit user</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form method="POST" action="/users/edit">
-              <input type="text" class="form-control" id="userIdInput" name="userIdInput" hidden required>
-              <div class="modal-body">
-                <div class="row mb-3">
-                  <div class="col-sm-3">
-                    <h6 class="mb-0">New name</h6>
-                  </div>
-                  <div class="col-sm-9 text-secondary">
-                    <input type="text" class="form-control" id="nameInput" name="nameInput" value="{{ name }}" required>
-                  </div>
+  <div class="container text-center">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <br>
+    <p class="mb-5" style="color:red;">{{ messages[0] }}</p>
+    {% endif %}
+    {% endwith %}
+  </div>
+
+
+  <div class="container">
+
+    <!-- change user modal -->
+    <div class="modal fade" id="changeUserModal" tabindex="-1" aria-labelledby="changeUserModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="changeUserModalLabel">Edit user</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form method="POST" action="/users/edit">
+            <input type="text" class="form-control" id="userIdInput" name="userIdInput" hidden required>
+            <div class="modal-body">
+              <div class="row mb-3">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">New name</h6>
                 </div>
-                <div class="row mb-3">
-                  <div class="col-sm-3">
-                    <h6 class="mb-0">New email</h6>
-                  </div>
-                  <div class="col-sm-9 text-secondary">
-                    <input type="email" class="form-control" id="emailInput" name="emailInput" value="{{ email }}" required>
-                  </div>
+                <div class="col-sm-9 text-secondary">
+                  <input type="text" class="form-control" id="nameInput" name="nameInput" value="{{ name }}" required>
                 </div>
-                <div class="row mb-3">
-                  <div class="col-sm-3">
-                    <div class="mb-0">
-                      <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" role="switch" id="adminInput" name="adminInput">
-                        <label class="form-check-label" for="adminInput">Admin</label>
-                      </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">New email</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  <input type="email" class="form-control" id="emailInput" name="emailInput" value="{{ email }}"
+                    required>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-sm-3">
+                  <div class="mb-0">
+                    <div class="form-check form-switch">
+                      <input class="form-check-input" type="checkbox" role="switch" id="adminInput" name="adminInput">
+                      <label class="form-check-label" for="adminInput">Admin</label>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="modal-footer">
-                <button type="submit" class="btn btn-info" id="buttons-change-user">Save changes</button>
-              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-info" id="buttons-change-user">Save changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="container">
+
+    <!-- delete modal -->
+    <div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="deleteUserModalLabel">Delete user</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Are you sure to delete the next user?
+            <p id="modalUserText"></p>
+            This cannot be undoed
+          </div>
+          <div class="modal-footer">
+            <form method="POST" action="/users/delete">
+              <input type="text" class="form-control" id="deleteUserIdInput" name="deleteUserIdInput" hidden required>
+              <button type="submit" class="btn btn-danger" id="buttons-user-delete">Yes, delete</button>
             </form>
           </div>
         </div>
       </div>
     </div>
+  </div>
 
 
-    <div class="container">
+  <div class="toast-container">
 
-      <!-- delete modal -->
-      <div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="deleteUserModalLabel">Delete user</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              Are you sure to delete the next user?
-              <p id="modalUserText"></p>
-              This cannot be undoed
-            </div>
-            <div class="modal-footer">
-              <form method="POST" action="/users/delete">
-                <input type="text" class="form-control" id="deleteUserIdInput" name="deleteUserIdInput" hidden required>
-                <button type="submit" class="btn btn-danger" id="buttons-user-delete">Yes, delete</button>
-              </form>
-            </div>
-          </div>
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+      <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-animation="true" ,
+        data-bs-delay=3000>
+        <div class="toast-header">
+          <img src="../static/img/shopping-list.png" class="rounded me-2" style="width: 20px;" alt="...">
+          <strong class="me-auto">Notification</strong>
+          <small>Now</small>
+          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body" id="toastBodyText">
+          TEXT
         </div>
       </div>
     </div>
-
-
-    <div class="toast-container">
-
-      <div class="toast-container position-fixed bottom-0 end-0 p-3">
-        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-animation="true", data-bs-delay=3000>
-          <div class="toast-header">
-            <img src="../static/img/shopping-list.png" class="rounded me-2" style="width: 20px;" alt="...">
-            <strong class="me-auto">Notification</strong>
-            <small>Now</small>
-            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-          </div>
-          <div class="toast-body" id="toastBodyText">
-              TEXT
-          </div>
-        </div>
-      </div>
 
   </div>
 
 
 
-    <script src='../static/js/toggle_theme.js'></script>
-    <script src='../static/js/admin.js'></script>
-  </body>
+  <script src='../static/js/toggle_theme.js'></script>
+  <script src='../static/js/admin.js'></script>
+</body>
 
 </html>

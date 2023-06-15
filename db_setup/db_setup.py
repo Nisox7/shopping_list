@@ -6,7 +6,7 @@ project_path = os.path.abspath('/app')
 sys.path.insert(0, project_path)
 
 from project import create_app, db
-from project.models import User
+from project.models import User, Config
 from werkzeug.security import generate_password_hash
 
 # Create the Flask application
@@ -25,5 +25,9 @@ with app.app_context():
 
     admin = User(email=email, name=name, password=generate_password_hash(password, method='sha256'), is_admin=is_admin)
 
+    config = Config(registration_enabled=False)
+
     db.session.add(admin)
+    db.session.add(config)
+    
     db.session.commit()

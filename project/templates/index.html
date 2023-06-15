@@ -1,119 +1,122 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Shopping list</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel="icon" type="image/x-icon" href="../static/img/logo-rounded.png">
-<!--    <link rel='stylesheet' type='text/css' media='screen' href='css/main.css'> -->
-    <link href="../static/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <link rel="stylesheet" href="../static/css/bootstrap-icons-1.10.5/font/bootstrap-icons.css">
-    <script src="../static/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <title>Shopping list</title>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <link rel="icon" type="image/x-icon" href="../static/img/logo-rounded.png">
+  <!--    <link rel='stylesheet' type='text/css' media='screen' href='css/main.css'> -->
+  <link href="../static/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+  <link rel="stylesheet" href="../static/css/bootstrap-icons-1.10.5/font/bootstrap-icons.css">
+  <script src="../static/js/bootstrap.bundle.min.js"
+    integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+    crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
+
 <body>
   <!--Or light-->
-   <html></html>
+  <html>
 
-   <div class="container">
+  </html>
 
-    <nav
-    class="navbar bg-body-tertiary shadow p-3 mb-5 bg-body-tertiary rounded">
-    <div class="container-fluid">
+    <nav class="navbar bg-body-tertiary shadow p-3 mb-5 bg-body-tertiary rounded">
+      <div class="container-fluid">
 
-      <button class="btn" type="button" data-bs-toggle="offcanvas"
-        data-bs-target="#offcanvasWithBothOptions"
-        aria-controls="offcanvasWithBothOptions"><i class="bi bi-list fs-2"></i></button>
+        <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
+          aria-controls="offcanvasWithBothOptions"><i class="bi bi-list fs-2"></i></button>
 
-      <div class="offcanvas offcanvas-start" data-bs-scroll="true"
-        tabindex="-1" id="offcanvasWithBothOptions"
-        aria-labelledby="offcanvasWithBothOptionsLabel">
-        <div class="offcanvas-header">
-          <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Menu</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
-            aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body">
-          <div class="btn-group-vertical" role="group"
-            aria-label="Vertical button group">
-            <a class="btn btn-primary" href="{{ url_for('auth.logout') }}">Logout</a>
+        <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions"
+          aria-labelledby="offcanvasWithBothOptionsLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Menu</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
 
-            <a class="btn btn-secondary" href="{{ url_for('main.profile') }}">Profile</a>
+              <a class="btn btn-secondary" href="#">Home</a>
 
-            {% if current_user.is_admin %}
-            <a class="btn btn-info" href="{{ url_for('main.admin') }}">Admin
-              console</a>
-            {% endif %}
+              <a class="btn btn-secondary" href="{{ url_for('main.profile') }}">Profile</a>
 
+              {% if current_user.is_admin %}
+              <a class="btn btn-secondary" href="{{ url_for('main.admin') }}">Admin
+                console</a>
+              {% endif %}
+
+              <a class="btn btn-warning" href="{{ url_for('auth.logout') }}">Logout</a>
+
+            </div>
           </div>
         </div>
-      </div>
-      <!--<img src="../static/img/shopping-list.png" alt="Logo" width="30" height="24" class="">-->
-      <a class="navbar-brand" href="{{ url_for('main.index') }}">Shopping list</a>
+        <!--<img src="../static/img/shopping-list.png" alt="Logo" width="30" height="24" class="">-->
+        <a class="navbar-brand" href="{{ url_for('main.index') }}">Shopping list</a>
 
-      <div class id="navbarNavDropdown">
-        <ul>
-          <div class="dropdown">
-            <a
-              class="btn btn-link nav-link py-2 px-0 px-lg-2 dropdown-toggle d-flex align-items-center"
-              href="#" role="button" data-bs-toggle="dropdown"
-              aria-expanded="false">
-              <i class="bi bi-sun"> Theme</i>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end">
-              <button type="button" class="btn" id="switchThemeLight">Light</button>
-              <button type="button" class="btn" id="switchThemeDark">Dark</button>
-            </ul>
-          </div>
-        </ul>
+        <div class id="navbarNavDropdown">
+          <ul>
+            <div class="dropdown">
+              <a class="btn btn-link nav-link py-2 px-0 px-lg-2 dropdown-toggle d-flex align-items-center" href="#"
+                role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-sun"> Theme</i>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <button type="button" class="btn" id="switchThemeLight">Light</button>
+                <button type="button" class="btn" id="switchThemeDark">Dark</button>
+              </ul>
+            </div>
+          </ul>
+        </div>
+    </nav>
+
+  <div class="container">
+    <div class="container shadow p-3 mb-5 bg-body-tertiary rounded">
+
+      <div class="input-group">
+        <input type="text" class="form-control" id="add-lists-input" placeholder="Add list"
+          aria-label="Añadir elementos a la lista de compra" aria-describedby="button-addon">
+        <button class="btn btn-outline-secondary" type="button" id="button-addon">Add</button>
       </div>
 
     </div>
-  </nav>
 
-      <div class="container shadow p-3 mb-5 bg-body-tertiary rounded">
-
-          <div class="input-group">
-              <input type="text" class="form-control" id="add-lists-input" placeholder="Add list" aria-label="Añadir elementos a la lista de compra" aria-describedby="button-addon">
-              <button class="btn btn-outline-secondary" type="button" id="button-addon">Add</button>
-          </div>
-          
+    <div class="cards-menu shadow p-3 mb-5 bg-body-tertiary rounded">
+      <nav class="navbar bg-body-tertiary">
+        <div class="container-fluid">
+          <span class="navbar-brand mb-0 h1">Lists</span>
+        </div>
+      </nav>
+      <div class="row lists-list">
+        <!--LISTS ARE HERE, loaded from js-->
       </div>
 
-      <div class="cards-menu shadow p-3 mb-5 bg-body-tertiary rounded">
-        <nav class="navbar bg-body-tertiary">
-          <div class="container-fluid">
-            <span class="navbar-brand mb-0 h1">Lists</span>
-          </div>
-        </nav>
-        <div class="row lists-list">
-            <!--LISTS ARE HERE, loaded from js-->
-        </div>
-
+    </div>
   </div>
 
 
+    <div class="toast-container">
 
-  <div class="toast-container">
-
-    <div class="toast-container position-fixed bottom-0 end-0 p-3">
-      <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-animation="true", data-bs-delay=3000>
-        <div class="toast-header">
-          <img src="../static/img/shopping-list.png" class="rounded me-2" style="width: 20px;" alt="...">
-          <strong class="me-auto">Notification</strong>
-          <small>Now</small>
-          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-        <div class="toast-body" id="toastBodyText">
+      <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-animation="true"
+          , data-bs-delay=3000>
+          <div class="toast-header">
+            <img src="../static/img/shopping-list.png" class="rounded me-2" style="width: 20px;" alt="...">
+            <strong class="me-auto">Notification</strong>
+            <small>Now</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+          <div class="toast-body" id="toastBodyText">
             TEXT
+          </div>
         </div>
       </div>
-    </div>
 
-  </div>
-  <script src='../static/js/toggle_theme.js'></script>
-  <script>var listUrl = "{{ url_for('main.lists') }}";</script>
-  <script src='../static/js/main.js'></script>
+    </div>
+    <script src='../static/js/toggle_theme.js'></script>
+    <script>var listUrl = "{{ url_for('main.lists') }}";</script>
+    <script src='../static/js/main.js'></script>
 </body>
+
 </html>
