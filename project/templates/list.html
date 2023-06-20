@@ -1,166 +1,93 @@
-<!DOCTYPE html>
-<html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-<head>
-  <meta charset='utf-8'>
-  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-  <title>Shopping list</title>
-  <meta name='viewport' content='width=device-width, initial-scale=1'>
-  <link rel="icon" type="image/x-icon" href="../static/img/logo-rounded.png">
-  <!--    <link rel='stylesheet' type='text/css' media='screen' href='css/main.css'> -->
-  <link href="../static/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-  <link rel="stylesheet" href="../static/css/bootstrap-icons-1.10.5/font/bootstrap-icons.css">
-  <script src="../static/js/bootstrap.bundle.min.js"
-    integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
-    crossorigin="anonymous"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+{% extends "base.html" %}
 
-</head>
+{% block content %}
 
-<body>
-
-  <html>
-
-  </html><!--THIS CHANGES THE THEME!-->
-
-  <nav class="navbar bg-body-tertiary shadow p-3 mb-5 bg-body-tertiary rounded">
+<div class="container shadow p-3 mb-5 bg-body-tertiary rounded">
+  <nav class="navbar bg-body-tertiary">
     <div class="container-fluid">
-
-      <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
-        aria-controls="offcanvasWithBothOptions"><i class="bi bi-list fs-2"></i></button>
-
-      <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions"
-        aria-labelledby="offcanvasWithBothOptionsLabel">
-        <div class="offcanvas-header">
-          <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Menu</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body">
-          <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
-
-            <a class="btn btn-secondary" href="{{ url_for('main.index') }}">Home</a>
-
-            <a class="btn btn-secondary" href="{{ url_for('main.profile') }}">Profile</a>
-
-            {% if current_user.is_admin %}
-            <a class="btn btn-secondary" href="{{ url_for('main.admin') }}">Admin
-              console</a>
-            {% endif %}
-
-            <a class="btn btn-warning" href="{{ url_for('auth.logout') }}">Logout</a>
-
-          </div>
-        </div>
-      </div>
-      <!--<img src="../static/img/shopping-list.png" alt="Logo" width="30" height="24" class="">-->
-      <a class="navbar-brand" href="{{ url_for('main.index') }}">Shopping list</a>
-
-      <div class id="navbarNavDropdown">
-        <ul>
-          <div class="dropdown">
-            <a class="btn btn-link nav-link py-2 px-0 px-lg-2 dropdown-toggle d-flex align-items-center" href="#"
-              role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="bi bi-sun"> Theme</i>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end">
-              <button type="button" class="btn" id="switchThemeLight">Light</button>
-              <button type="button" class="btn" id="switchThemeDark">Dark</button>
-            </ul>
-          </div>
-        </ul>
-      </div>
-
+      <span class="navbar-brand mb-0 h1" id="listNameText">
+        <!--Addeds from JS-->
+      </span>
+      <p id="amount-items">0 items</p>
     </div>
   </nav>
-
-  <div class="container shadow p-3 mb-5 bg-body-tertiary rounded">
-    <nav class="navbar bg-body-tertiary">
-      <div class="container-fluid">
-        <span class="navbar-brand mb-0 h1" id="listNameText">
-          <!--Addeds from JS-->
-        </span>
-        <p id="amount-items">0 items</p>
-      </div>
-    </nav>
-    <div class="input-group">
-      <input type="text" class="form-control" id="add-items-input" placeholder="Add items"
-        aria-label="Añadir elementos a la lista de compra" aria-describedby="button-addon">
-      <button class="btn btn-outline-secondary" type="button" id="button-addon">Add</button>
-    </div>
-
-    <ul class="list-group">
-      <!--Addeds from JS-->
-
-    </ul>
-
-    <div class="container col text-end" id="container-bottom-list">
-      <br>
-
-      <button class="btn btn-outline-primary" type="button" id="save-button">
-        <i class="bi bi-save"></i>
-      </button>
-
-      <button class="btn btn-outline-danger" type="button" id="buttons-delete"><i
-          class="bi bi-trash3-fill"></i></button>
-    </div>
+  <div class="input-group">
+    <input type="text" class="form-control" id="add-items-input" placeholder="Add items"
+      aria-label="Añadir elementos a la lista de compra" aria-describedby="button-addon">
+    <button class="btn btn-outline-secondary" type="button" id="button-addon">Add</button>
   </div>
 
-  <div class="buttons-container text-center">
-    <a href="{{ url_for('main.index') }}"><input class="btn btn-outline-primary btn" id="buttons-back" type="submit"
-        value="Back home"></a>
-    <!--<input class="btn btn-outline-danger btn-sm" id="buttons-delete" type="submit" value="Delete selected" hidden> THJIS IS THE OLD DELETE BUTTOn-->
-    <!--<input class="btn btn-outline-danger" id="buttons-list-delete" type="submit" value="Delete list!">-->
-    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteListModal">
-      Delete list
+  <ul class="list-group">
+    <!--Addeds from JS-->
+
+  </ul>
+
+  <div class="container col text-end" id="container-bottom-list">
+    <br>
+
+    <button class="btn btn-outline-primary" type="button" id="save-button">
+      <i class="bi bi-save"></i>
     </button>
+
+    <button class="btn btn-outline-danger" type="button" id="buttons-delete"><i class="bi bi-trash3-fill"></i></button>
   </div>
+</div>
 
-  <div class="container">
+<div class="buttons-container text-center">
+  <a href="{{ url_for('main.index') }}"><input class="btn btn-outline-primary btn" id="buttons-back" type="submit"
+      value="Back home"></a>
+  <!--<input class="btn btn-outline-danger btn-sm" id="buttons-delete" type="submit" value="Delete selected" hidden> THJIS IS THE OLD DELETE BUTTOn-->
+  <!--<input class="btn btn-outline-danger" id="buttons-list-delete" type="submit" value="Delete list!">-->
+  <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteListModal">
+    Delete list
+  </button>
+</div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="deleteListModal" tabindex="-1" aria-labelledby="deleteListModalLabel"
-      aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="deleteListModalLabel">Delete list</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            Are you sure to delete list?
-            This cannot be undoed
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, close</button>
-            <button type="button" class="btn btn-danger" id="buttons-list-delete">Yes, delete</button>
-          </div>
+<div class="container">
+
+  <!-- Modal -->
+  <div class="modal fade" id="deleteListModal" tabindex="-1" aria-labelledby="deleteListModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="deleteListModalLabel">Delete list</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Are you sure to delete list?
+          This cannot be undoed
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, close</button>
+          <button type="button" class="btn btn-danger" id="buttons-list-delete">Yes, delete</button>
         </div>
       </div>
     </div>
   </div>
+</div>
 
-  <div class="toast-container">
+<div class="toast-container">
 
-    <div class="toast-container position-fixed bottom-0 end-0 p-3">
-      <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-animation="true" ,
-        data-bs-delay=3000>
-        <div class="toast-header">
-          <img src="../static/img/shopping-list.png" class="rounded me-2" style="width: 20px;" alt="...">
-          <strong class="me-auto">Notification</strong>
-          <small>Now</small>
-          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-        <div class="toast-body" id="toastBodyText">
-          TEXT
-        </div>
+  <div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-animation="true" ,
+      data-bs-delay=3000>
+      <div class="toast-header">
+        <img src="../static/img/shopping-list.png" class="rounded me-2" style="width: 20px;" alt="...">
+        <strong class="me-auto">Notification</strong>
+        <small>Now</small>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body" id="toastBodyText">
+        TEXT
       </div>
     </div>
-
   </div>
-  <script src='../static/js/toggle_theme.js'></script>
-  <script>var indexUrl = "{{ url_for('main.index') }}";</script>
-  <script src='../static/js/list.js'></script>
-</body>
 
-</html>
+</div>
+<script src='../static/js/toggle_theme.js'></script>
+<script>var indexUrl = "{{ url_for('main.index') }}";</script>
+<script src='../static/js/list.js'></script>
+
+{% endblock %}

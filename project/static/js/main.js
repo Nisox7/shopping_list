@@ -1,19 +1,24 @@
 //API Connection
 //Writes the lists from the database
 
+let listSubText = document.getElementById("listsSubText");
+
 $(document).ready(function() {
   $.getJSON('/lists/list', function(datos) {
+
+    
       // Manipula los datos en JavaScript
       for (let i = 0; i < datos.length; i++) {
         let lists = datos[i];
-        //console.log(elements); // Imprime cada elemento en la consola
+
         let list = lists['list'];
         let amount_items = lists['amount_items'];
 
         addLists(list, true, amount_items);
       }
-      
+      listSubText.innerHTML=datos.length; 
   });
+
 });
 
 

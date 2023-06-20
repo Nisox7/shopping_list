@@ -231,3 +231,7 @@ def items_checked():
 def profile():
     return render_template('profile.html', name=current_user.name, email=current_user.email)
 
+@main.route('/base')
+@login_required
+def base():
+    return render_template('base.html')
