@@ -7,7 +7,7 @@ COPY . .
 RUN pip3 install -r requirements.txt
 
 ENV FLASK_APP=project
-ENV FLASK_DEBUG=1
+#ENV FLASK_DEBUG=1 #uncomment only dev purposes
 
 EXPOSE 5000
 
