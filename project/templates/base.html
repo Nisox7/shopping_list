@@ -21,53 +21,46 @@
 
     </html>
 
-    <nav class="navbar bg-body-tertiary shadow p-3 mb-5 bg-body-tertiary rounded">
+    <nav class="navbar navbar-expand-md bg-body-tertiary">
         <div class="container-fluid">
-
-            <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
-                aria-controls="offcanvasWithBothOptions"><i class="bi bi-list fs-2"></i></button>
-
-            <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions"
-                aria-labelledby="offcanvasWithBothOptionsLabel">
-                <div class="offcanvas-header">
-                    <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Menu</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
-                <div class="offcanvas-body">
-                    <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
-
-                        <a class="btn btn-secondary" href="{{ url_for('main.index') }}">Home</a>
-
-                        <a class="btn btn-secondary" href="{{ url_for('main.profile') }}">Profile</a>
-
-                        {% if current_user.is_admin %}
-                        <a class="btn btn-secondary" href="{{ url_for('main.admin') }}">Admin
-                            console</a>
-                        {% endif %}
-
-                        <a class="btn btn-warning" href="{{ url_for('auth.logout') }}">Logout</a>
-
-                    </div>
-                </div>
-            </div>
-            <!--<img src="../static/img/shopping-list.png" alt="Logo" width="30" height="24" class="">-->
-            <a class="navbar-brand" href="{{ url_for('main.index') }}">Shopping list</a>
-
-            <div class id="navbarNavDropdown">
-                <ul>
-                    <div class="dropdown">
-                        <a class="btn btn-link nav-link py-2 px-0 px-lg-2 dropdown-toggle d-flex align-items-center"
-                            href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-sun"> Theme</i>
+            <a class="navbar-brand" href="#">
+                <img src="../static/img/colored-logo.png" alt="Logo" width="40" height="40" class="">
+                Shopping list</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02"
+                aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.index') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.profile') }}">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.admin') }}">Admin</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav flex-row flex-wrap ms-md-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Theme
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <button type="button" class="btn" id="switchThemeLight">Light</button>
-                            <button type="button" class="btn" id="switchThemeDark">Dark</button>
+                        <ul class="dropdown-menu dropdown-menu-end" data-bs-popper="static">
+                            <li><button type="button" class="dropdown-item btn" id="switchThemeLight">
+                                <i class="bi bi-moon-stars-fill"></i> Light</button></li>
+                            <li><button type="button" class="dropdown-item btn" id="switchThemeDark">
+                                <i class="bi bi-sun-fill"></i> Dark</button></li>
                         </ul>
-                    </div>
+                    </li>
                 </ul>
             </div>
+        </div>
     </nav>
+
+    <br>
 
     {% block content %}
     missing content
