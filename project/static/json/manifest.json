@@ -1,0 +1,15 @@
+{
+    "name": "Shopping List",
+    "short_name": "Shopping List",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#fff",
+    "description": "Shopping list",
+    "icons": [
+      {
+        "src": "../img/logo-rounded.png",
+        "type": "image/png",
+        "sizes": "612x612"
+      }
+    ]
+  }
