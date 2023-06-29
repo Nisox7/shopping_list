@@ -2,7 +2,6 @@
 
 import os
 
-secret_key = os.getenv("SECRET_KEY")
 database_host = os.getenv("DATABASE_HOST")
 database_name = os.getenv("DATABASE_NAME")
 database_table = os.getenv("DATABASE_TABLE")
