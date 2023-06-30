@@ -1,8 +1,10 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify, session
 from flask_login import login_required, current_user
 from . import db
-from .models import Config, User
+from .models import Config, User, RegisterLink
 from .bbdd import *
+
+from .register import generate_registration_link
 
 main = Blueprint('main', __name__)
 
@@ -53,7 +55,63 @@ def admin():
 
 
 
-@main.route('/admin/register', methods=['POST'])
+@main.route('/admin/registerlink')
+@login_required
+def admin_registerlink():
+    if current_user.is_admin:
+
+        registers_link = RegisterLink.query.all()
+
+        return render_template('adminregister.html', registersLink=registers_link)
+    else:
+        return render_template('nopermission.html')  
+
+
+
+@main.route('/admin/registerlink/new', methods=['POST'])
+@login_required
+def admin_registerlink_post():
+
+    if current_user.is_admin:
+
+        generate_link = generate_registration_link(request.url_root)
+
+        url = generate_link[0]
+        token=generate_link[1]
+
+        name = request.form.get("nameInput")
+        is_admin_form = request.form.get("adminInput")
+
+        if is_admin_form == "on":
+            is_admin=True
+        else:
+            is_admin=False
+        
+
+        register_link = RegisterLink(link_name=name, link_token=token, link_complete=url, is_admin=is_admin)
+
+        db.session.add(register_link)
+        
+        db.session.commit()
+
+        return redirect(url_for('main.admin_registerlink'))
+
+
+@main.route('/admin/registerlink/del', methods=['POST'])
+@login_required
+def admin_registerlink_del_post():
+
+    if current_user.is_admin:
+
+        token_id = request.form.get("id")
+
+        RegisterLink.query.filter_by(id=token_id).delete()
+        db.session.commit()
+
+        return redirect(url_for('main.admin_registerlink'))
+
+
+@main.route('/admin/newUsersRegister', methods=['POST'])
 @login_required
 def admin_change_permission():
 
@@ -235,3 +293,27 @@ def profile():
 @login_required
 def base():
     return render_template('base.html')
+
+
+@main.route('/sign-up')
+def signup():
+    pass
+
+
+@main.route('/sign-up/<token>')
+def register(token):
+    # Retrieve the user from the database using the token
+    print(token)
+    try:
+
+        result = RegisterLink.query.filter_by(link_token=token).one()
+        print('Valid token')
+
+        RegisterLink.query.filter_by(link_token=token).delete()
+        db.session.commit()
+
+        return render_template('signup.html')
+    except:
+        # If the query raises NoResultFound, the ID doesn't exist
+        print('Invalid or expired token')
+        return "Invalid or expired token"

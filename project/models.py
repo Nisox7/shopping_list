@@ -13,3 +13,11 @@ class User(UserMixin, db.Model):
 class Config(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     registration_enabled = db.Column(db.Boolean, default=False)
+
+
+class RegisterLink(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    link_name = db.Column(db.String(100))
+    link_token = db.Column(db.String(100))
+    link_complete = db.Column(db.String(150))
+    is_admin = db.Column(db.Boolean(), default=False)
