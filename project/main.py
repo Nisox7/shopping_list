@@ -209,15 +209,15 @@ def get_items():
         item = things[1]
         item_checked = things[2]
 
-        print(item)
-        print(item_checked)
+        #print(item)
+        #print(item_checked)
 
         total_items_list.append(item)
         total_items_list.append(item_checked)
 
         items_list.append(total_items_list)
     
-    print(items_list)
+    #print(items_list)
 
     return jsonify({'message': 'True', 'elements': items_list})
     #return jsonify({'message': 'True'})
@@ -247,11 +247,12 @@ def create_item():
 def delete_item():
     data = request.get_json()
 
-    item_id = (data['item_id'])
+    items = (data['items'])
     local_list = data['list']
 
     try:
-        delete_from_db(item_id,local_list)
+        for item in items:
+            delete_from_db(item,local_list)
         result={'message':'True'}
     except Exception as e:
         result = {'message':f"Error writing: {e}"}

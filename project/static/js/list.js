@@ -28,7 +28,7 @@ $.ajax({
 
         for (let i = 0; i < response.elements.length; i++) {
           let elements = response.elements[i];
-          console.log(elements); // Imprime cada elemento en la consola
+          //console.log(elements); // Imprime cada elemento en la consola
           let elementsText = elements[0];
           let elementsChecked = elements[1];
 
@@ -106,7 +106,7 @@ function loadItem(element,elementId){
 
 function deleteItem(elementId,localList){
   
-  let jsonValues = {item_id: elementId, list: localList};
+  let jsonValues = {items: elementId, list: localList};
 
 
   $.ajax({
@@ -311,11 +311,12 @@ function writeChangesToDatabase() {
 function removeCheckedBoxes(){
   let amount = 0;
   let checkBoxesList = document.querySelectorAll(".checkbox-input");
+  let forDelete = []
 
   for (let checkBoxes of checkBoxesList){
     if (checkBoxes.checked == true){
 
-      deleteItem(checkBoxes.id,localList);
+      forDelete.push(checkBoxes.id)
 
       //console.log("PRESIONADO:")
       //console.log(checkBoxes.id);
@@ -328,22 +329,23 @@ function removeCheckedBoxes(){
     else{
       //console.log(checkBoxes);
     }
-
-    if (amount == 0){
-      showToast("Select an item for delete!");
-    }
-    else if (amount ==1){
-      showToast(`Deleted ${amount} item`);
-      deleteButton();
-    }
-    else{
-      showToast(`Deleted ${amount} items`);
-      deleteButton();
-    }
-    
-    
-    
   }
+
+  console.log(forDelete);
+  deleteItem(forDelete,localList);
+
+  if (amount == 0){
+    showToast("Select an item for delete!");
+  }
+  else if (amount ==1){
+    showToast(`Deleted ${amount} item`);
+    deleteButton();
+  }
+  else{
+    showToast(`Deleted ${amount} items`);
+    deleteButton();
+  } 
+
   //console.log(checkBoxesList);
 }
 
@@ -364,7 +366,7 @@ function deleteList(){
          showToast("List deleted. Backing home...")
          setTimeout(function() {
             location.href=indexUrl;
-            }, 2000);
+            }, 1200);
           }
       },
       error: function(error) {
