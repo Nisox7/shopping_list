@@ -11,7 +11,10 @@
     <script src="../static/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 
 </head>
+
+
 <body>
+
     <div class="vh-100 d-flex justify-content-center align-items-center">
         <div class="container">
           <div class="row d-flex justify-content-center">
@@ -19,6 +22,7 @@
               <div class="border border-3 border-primary"></div>
               <div class="card bg-white">
                 <div class="card-body p-5">
+                  {% if registration_enabled %}
                   <form class="mb-3 mt-md-4" method="POST" action="/signup">
                     <h2 class="fw-bold mb-2">Shopping list</h2>
                     {% with messages = get_flashed_messages() %}
@@ -27,6 +31,10 @@
                     {% endif %}
                     {% endwith %}
                     
+                    {% if token %}
+                    <input type="text" name="token" value="{{token}}" hidden required>
+                    {% endif %}
+
                     <div class="mb-3">
                         <label for="email" class="form-label ">Email address</label>
                         <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
@@ -44,6 +52,12 @@
                     </div>
                   </form>
                   <div>
+                {% else %}
+                  <h2 class="fw-bold mb-2">Shopping list</h2>
+                  <br>
+                  <br>
+                  <p class="mb-5 d-flex align-items-center justify-content-center" style="color:red">The user register is disabled</p>
+                {% endif %}
                     <p class="mb-0  text-center">Already have an account? <a href="{{ url_for('auth.login') }}"
                         class="text-primary fw-bold">Sign
                         In</a></p>

@@ -3,7 +3,6 @@ from flask_login import login_required, current_user
 from . import db
 from .models import Config, User, RegisterLink
 from .bbdd import *
-
 from .register import generate_registration_link
 
 main = Blueprint('main', __name__)
@@ -123,8 +122,10 @@ def admin_change_permission():
 
         print(state)
 
-        config = Config(registration_enabled=state)
-        db.session.add(config)
+        config = Config.query.filter_by(id=1).first()
+
+        config.registration_enabled=state
+
         db.session.commit()
 
         return jsonify(state)
@@ -293,27 +294,3 @@ def profile():
 @login_required
 def base():
     return render_template('base.html')
-
-
-@main.route('/sign-up')
-def signup():
-    pass
-
-
-@main.route('/sign-up/<token>')
-def register(token):
-    # Retrieve the user from the database using the token
-    print(token)
-    try:
-
-        result = RegisterLink.query.filter_by(link_token=token).one()
-        print('Valid token')
-
-        RegisterLink.query.filter_by(link_token=token).delete()
-        db.session.commit()
-
-        return render_template('signup.html')
-    except:
-        # If the query raises NoResultFound, the ID doesn't exist
-        print('Invalid or expired token')
-        return "Invalid or expired token"

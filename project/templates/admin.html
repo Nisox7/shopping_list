@@ -1,6 +1,7 @@
 <link rel="stylesheet" href="../static/css/admin.css">
 <script src='../static/js/toggle_theme.js'></script>
 
+
 {% extends "base.html" %}
 
 {% block content %}
@@ -84,7 +85,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <form method="POST" action="/users/edit">
-          <input type="text" class="form-control" id="userIdInput" name="userIdInput" hidden required>
+          <input type="text" class="form-control" id="userIdInput" name="userIdInput" value="{{ id }}" hidden required>
           <div class="modal-body">
             <div class="row mb-3">
               <div class="col-sm-3">
@@ -115,8 +116,13 @@
           </div>
           <div class="modal-footer">
             <button type="submit" class="btn btn-info" id="buttons-change-user">Save changes</button>
-          </div>
-        </form>
+          </form>
+          <form method="POST" action="/users/reset-password">
+            <input type="text" class="form-control" id="userIdInput2" name="userIdInput2" value="" hidden required>
+            <button type="submit" class="btn btn-danger" id="buttons-reset-password">Reset password</button>
+          </form>
+          
+        </div>
       </div>
     </div>
   </div>

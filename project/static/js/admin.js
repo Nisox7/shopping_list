@@ -17,7 +17,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Set the value of the input field in the modal
         var userIdInput = document.getElementById('userIdInput');
+        var userIdInput2 = document.getElementById('userIdInput2');
         userIdInput.value = userId;
+        userIdInput2.value = userId;
+
+        console.log(userId)
+        console.log(userIdInput2)
 
         var userNameInput = document.getElementById("nameInput");
         userNameInput.value = userName;
@@ -61,4 +66,8 @@ document.addEventListener('DOMContentLoaded', function() {
         deleteModal.show();
         })
     })
+
+
 });
+
+
