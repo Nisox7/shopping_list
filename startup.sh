@@ -14,4 +14,4 @@ else
   echo "Database already migrated"
 fi
 
-flask run --host 0.0.0.0
+uwsgi --ini uwsgi.ini

@@ -1,14 +1,10 @@
-FROM python:3.10-alpine3.16
+FROM python:3.10
 
 WORKDIR /app
 
 COPY . .
 
-RUN pip3 install -r requirements.txt
-
-ENV FLASK_APP=project
-#ENV FLASK_DEBUG=1
-#uncomment only dev purposes
+RUN pip3 install --no-cache-dir -r requirements.txt
 
 EXPOSE 5000
 
