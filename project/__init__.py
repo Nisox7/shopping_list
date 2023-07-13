@@ -11,7 +11,7 @@ def create_app():
     app = Flask(__name__)
 
     secret_key = os.urandom(24)
-    #secret_key="ghfdgsgfsdf66FGFGf"
+
     app.config['SECRET_KEY'] = secret_key
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
     
@@ -38,5 +38,13 @@ def create_app():
     # blueprint for non-auth parts of app
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
+
+    # blueprint for non-auth parts of app
+    from .lists import lists as lists_blueprint
+    app.register_blueprint(lists_blueprint)
+
+    # items blueprint
+    from .items import items as items_blueprint
+    app.register_blueprint(items_blueprint)
 
     return app

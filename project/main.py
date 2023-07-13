@@ -5,33 +5,16 @@ from .models import Config, User, RegisterLink
 from .bbdd import *
 from .register import generate_registration_link
 
+
 main = Blueprint('main', __name__)
-
-@main.before_request
-def before_first_request():
-    if 'first_request_done' not in session:
-        # Realizar aquí la acción deseada
-        print("Executing startup things...")
-        try:
-            execute_on_db(f"CREATE TABLE AMOUNT_ITEMS (LIST VARCHAR(100), AMOUNT INT);")
-            print("Amount items created")
-        except Exception as e:
-            print(f"Error creating amount_items: {e}")
-
-        #try:
-            #db.create_all()
-        #    print("DB CREATE ALL")
-        #except Exception as e:
-        #    print("error: ",e)
-        
-        
-        session['first_request_done'] = True
 
 
 @main.route('/')
 @login_required
 def index():
+
     return render_template('index.html', name=current_user.name)
+
 
 @main.route('/list')
 @login_required
@@ -136,7 +119,7 @@ def admin_change_permission():
 
 #----Read lists(tables) from db----
 @main.route('/lists/list')
-@login_required
+#@login_required
 def get_tables():
 
     tables_list=[]
@@ -158,7 +141,7 @@ def get_tables():
     return jsonify(tables_list)
 
 #----Write lists(tables) on db----
-@main.route('/lists/create', methods=['POST'])
+@main.route('/lists/creatse', methods=['POST'])
 @login_required
 def create_table():
     table = request.get_json()
@@ -174,7 +157,7 @@ def create_table():
     return jsonify(result)
 
 #----Delete lists(tables) on db----
-@main.route('/lists/delete', methods=['POST'])
+@main.route('/lists/deletex', methods=['POST'])
 @login_required
 def delete_table():
     data = request.get_json()
@@ -192,7 +175,7 @@ def delete_table():
 #-------------------ITEMS-------------------
 
 #----Read items from db----
-@main.route('/items/list', methods=['POST'])
+@main.route('/items/listx', methods=['POST'])
 @login_required
 def get_items():
     items_list=[]
@@ -217,14 +200,14 @@ def get_items():
 
         items_list.append(total_items_list)
     
-    #print(items_list)
+    print(items_list)
 
     return jsonify({'message': 'True', 'elements': items_list})
     #return jsonify({'message': 'True'})
 
 
 #----Write items on db----
-@main.route('/items/create', methods=['POST'])
+@main.route('/items/creates', methods=['POST'])
 @login_required
 def create_item():
     data = request.get_json()
@@ -242,7 +225,7 @@ def create_item():
     return jsonify(result)
 
 #----Delete items on db----
-@main.route('/items/delete', methods=['POST'])
+@main.route('/items/deletex', methods=['POST'])
 @login_required
 def delete_item():
     data = request.get_json()
@@ -260,7 +243,7 @@ def delete_item():
     return result
 
 #----Delete items on db----
-@main.route('/items/checked', methods=['POST'])
+@main.route('/items/checkedx', methods=['POST'])
 @login_required
 def items_checked():
     data = request.get_json()

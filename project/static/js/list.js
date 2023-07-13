@@ -1,8 +1,12 @@
-let localList = localStorage.getItem('list');
-//console.log(localList);
+function getListFromURL () {
+  var url = window.location.href;
+  var parts = url.split("/");
+  var filteredWord = parts[parts.length - 1];
+
+  return filteredWord;
+}
 
 let listNameText = document.getElementById("listNameText");
-listNameText.innerText=localList;
 
 let amountItems = 0;
 let textAmountItems = document.getElementById("amount-items");
@@ -14,34 +18,49 @@ let saveCheckDebounceTimer;
 //API Connection
 //Get elements
 
-let jsonValues = {list: localList};
+const localListId = getListFromURL();
 
-$.ajax({
-  url: '/items/list',
-  type: 'POST',
-  data: JSON.stringify(jsonValues),
-  contentType: 'application/json',
-  success: function(response) {
-      // Recibe la respuesta del servidor
-      //console.log(response);
-      if (response['message'] == "True"){
+function loadItems(addedFromInput){
 
-        for (let i = 0; i < response.elements.length; i++) {
-          let elements = response.elements[i];
-          //console.log(elements); // Imprime cada elemento en la consola
-          let elementsText = elements[0];
-          let elementsChecked = elements[1];
+  amountItems = 0;
 
-          addElementsToList(elementsText,true,elementsChecked);
+  const itemsList = document.getElementById("itemsList");
+
+  $.ajax({
+    url: `/items/${localListId}`,
+    type: 'GET',
+    contentType: 'application/json',
+    success: function(response) {
+      itemsList.replaceChildren();
+  
+      listNameText.innerText=(response['list_name'])
+  
+        for (let i = 0; i < response['items'].length; i++) {
+          let items = response['items'][i];
+          //console.log(items);
+  
+          let elementsText = items['name'];
+          let elementsChecked = items['is_checked'];
+          let elementId = items['id'];
+  
+          addElementsToList(elementsText,elementId,elementsChecked);
         }
-      }
-  },
-  error: function(error) {
-      // Ocurrió un error al enviar los datos
-      console.log(error);
-      showToast(`Error: ${error}`);
-  }
+    },
+    error: function(error) {
+        // Ocurrió un error al enviar los datos
+        console.log(error);
+        showToast(`Error: ${error}`);
+    }
+  });
+}
+
+
+$(document).ready(function() {
+
+  loadItems();
+
 });
+
 
 //------------------Toast------------------
 
@@ -80,8 +99,8 @@ function checkSpecialChars(element){
 
 
 
-function loadItem(element,elementId){
-  let jsonValues = {item: element, item_id: `id-${elementId}`, list: localList};
+function createItem(item){
+  let jsonValues = {item: item, listId: localListId, amount: 0};
 
 
   $.ajax({
@@ -92,7 +111,8 @@ function loadItem(element,elementId){
     success: function(response) {
         // Recibe la respuesta del servidor
         if (response['message'] == "True"){
-          showToast(`Added item: ${element}`)
+          showToast(`Added item: ${item}`)
+          loadItems();
         }
     },
     error: function(error) {
@@ -104,9 +124,9 @@ function loadItem(element,elementId){
 }
 
 
-function deleteItem(elementId,localList){
+function deleteItem(elementId){
   
-  let jsonValues = {items: elementId, list: localList};
+  let jsonValues = {id: elementId, listId: localListId};
 
 
   $.ajax({
@@ -130,67 +150,74 @@ function deleteItem(elementId,localList){
 
 //--------------------Add elements to the list----------------------
 
-function addElementsToList(element,addedFromDb,checked){
+function addElementsToList(element,elementId,checked,addedFromInput){
 
-  if (checkSpecialChars(element) == true){
-    showToast("Can't add special characters!");
+  //console.log(checkSpecialChars(element));
+    
+  //console.log(element);
+  completeList = document.querySelector(".list-group");
+  let newItem = document.createElement("LI");
+    
+  //console.log(elementId);
+  newItem.classList.add(`list-group-item`,`class-id-${elementId}`);
+
+  if (checked==0){
+
+    newItem.innerHTML = `
+
+    <input
+      class="form-check-input me-1 checkbox-input"
+      type="checkbox"
+      value=""
+      elementValue="${element}"
+      id="${elementId}"
+      onchange="checkCheckedButtons()"
+    >
+    
+    <label
+      class="form-check-label"
+      for="${elementId}"
+      id="element-id-${elementId}"
+      >${element}
+    </label>
+    `;
   }
-  else{
+
+  else if (checked==1){
+
+    newItem.innerHTML = `
+  <input
+    class="form-check-input me-1 checkbox-input"
+    type="checkbox"
+    value=""
+    elementValue="${element}"
+    id="${elementId}"
+    onchange="checkCheckedButtons()"
+    checked
+  >
   
-      let elementId = element.replaceAll(" ",""); //reemplaza los espacios por nada
-      elementId = elementId.replaceAll(".","-");
-      elementId = elementId.replaceAll("(","-");
-      elementId = elementId.replaceAll(")","-");
-      elementId = elementId.replaceAll(",","-");
-      elementId = elementId.replaceAll("!","-");
-
-      //console.log(checkSpecialChars(element));
-    
-      //console.log(element);
-      completeList = document.querySelector(".list-group");
-      let newItem = document.createElement("LI");
-    
-      //console.log(elementId);
-      newItem.classList.add(`list-group-item`,`class-id-${elementId}`);
-
-      if (checked==0){
-
-      newItem.innerHTML = `
-    <input class="form-check-input me-1 checkbox-input" type="checkbox" value="" elementValue="${element}" id="id-${elementId}" onchange="checkCheckedButtons()">
-    <label class="form-check-label" for="element-${elementId}" id="element-id-${elementId}">${element}</label>
-      `;
-      }
-
-      else if (checked==1){
-
-        newItem.innerHTML = `
-      <input class="form-check-input me-1 checkbox-input" type="checkbox" value="" elementValue="${element}" id="id-${elementId}" onchange="checkCheckedButtons()" checked>
-      <label class="form-check-label" for="element-${elementId}" id="element-id-${elementId}"><s>${element}</s></label>
-        `;
-      }
-      
-      else{
-        newItem.innerHTML = `
-        <input class="form-check-input me-1 checkbox-input" type="checkbox" value="" elementValue="${element}" id="id-${elementId}" onchange="checkCheckedButtons()">
-        <label class="form-check-label" for="element-${elementId}" id="element-id-${elementId}">${element}</label>
-          `
-      }
-
-    
-      completeList.appendChild(newItem);
-      //showtoast
-    
-      if (addedFromDb != true){
-        console.log("Cargando desde el input")
-        loadItem(element,elementId);
-      }
-
-      amountItems++;
-      
-      textAmountItems.innerText=`${amountItems} items` 
-      //console.log(amountItems);
-
+  <label
+    class="form-check-label"
+    for="${elementId}"
+    id="element-id-${elementId}">
+    <s>${element}</s>
+  </label>
+    `;
   }
+
+    
+  completeList.appendChild(newItem);
+  //showtoast
+
+  amountItems++;
+      
+  textAmountItems.innerText=`${amountItems} items` 
+  //console.log(amountItems);
+
+  if (addedFromInput==false){
+    showToast(`Added ${element} to the list`);
+  }
+
 }
 
 
@@ -231,15 +258,16 @@ function saveButton(state){
 
 }
 
-// Objeto para almacenar los cambios en el estado de los elementos
 let changes = {};
 
 function checkCheckedButtons() {
+  
   let checkBoxesList = document.querySelectorAll(".checkbox-input");
 
   for (let checkBox of checkBoxesList) {
     var elementId = checkBox.id;
-    var actualElement = document.getElementById(`element-${elementId}`);
+    var actualElement = document.getElementById(`element-id-${elementId}`);
+
     var actualElementValue = actualElement.textContent;
 
     if (checkBox.checked) {
@@ -259,7 +287,7 @@ function checkCheckedButtons() {
   clearTimeout(saveCheckDebounceTimer);
 
   // Configurar un nuevo temporizador de 3 segundos
-  saveCheckDebounceTimer = setTimeout(writeChangesToDatabase, 2000);
+  saveCheckDebounceTimer = setTimeout(writeChangesToDatabase, 250);
   //writeChangesToDatabase(); // Escribir los cambios en la base de datos
 }
 
@@ -272,17 +300,13 @@ function writeChangesToDatabase() {
     // Aquí puedes usar AJAX, fetch o cualquier método adecuado para enviar los cambios a la base de datos
     //console.log(`Escribir en la base de datos: ${elementId}`);
   //}
-
-  let list_changes = {list: localList, changes};
-
-  console.log(list_changes);
-
   saveButton("saving");
+
 
   $.ajax({
     url: '/items/checked',
     type: 'POST',
-    data: JSON.stringify(list_changes),
+    data: JSON.stringify(changes),
     contentType: 'application/json',
     success: function(response) {
         // Recibe la respuesta del servidor
@@ -301,6 +325,8 @@ function writeChangesToDatabase() {
     }
   });
 
+  changes={}
+
 }
 
 
@@ -316,12 +342,18 @@ function removeCheckedBoxes(){
   for (let checkBoxes of checkBoxesList){
     if (checkBoxes.checked == true){
 
-      forDelete.push(checkBoxes.id)
+      //console.log(checkBoxes)
+
+      let elementId = checkBoxes.id;
+      forDelete.push(elementId);
+
+      console.log(elementId)
 
       //console.log("PRESIONADO:")
       //console.log(checkBoxes.id);
-      let classForRemove = document.querySelector(`.class-${checkBoxes.id}`);
+      let classForRemove = document.querySelector(`.class-id-${checkBoxes.id}`);
       classForRemove.remove();
+
       amountItems --;
       textAmountItems.innerText=`${amountItems} items`
       amount++;
@@ -332,7 +364,6 @@ function removeCheckedBoxes(){
   }
 
   console.log(forDelete);
-  deleteItem(forDelete,localList);
 
   if (amount == 0){
     showToast("Select an item for delete!");
@@ -340,10 +371,12 @@ function removeCheckedBoxes(){
   else if (amount ==1){
     showToast(`Deleted ${amount} item`);
     deleteButton();
+    deleteItem(forDelete);
   }
   else{
     showToast(`Deleted ${amount} items`);
     deleteButton();
+    deleteItem(forDelete);
   } 
 
   //console.log(checkBoxesList);
@@ -352,7 +385,7 @@ function removeCheckedBoxes(){
 
 
 function deleteList(){
-    let jsonValues = {list: localList};
+    let jsonValues = {list: localListId};
 
     $.ajax({
       url: '/lists/delete',
@@ -382,20 +415,48 @@ function deleteList(){
 
 //------------------Buttons listeners---------------------
 
-document.getElementById('button-addon').addEventListener('click',()=>{
-  var itemsInput = document.getElementById('add-items-input');
+//Add item button
+let addItemBtn = document.getElementById('button-addon');
+var itemsInput = document.getElementById('add-items-input');
+
+//Add item button
+addItemBtn.addEventListener('click',()=>{
 
   if (itemsInput.value == ""){
     showToast("Can't add an empty item!");
     itemsInput.value="";
   }
   else{
-    addElementsToList(itemsInput.value);
+    createItem(itemsInput.value);
     //clear the input
     itemsInput.value="";
   }
 })
 
+//Enter key
+itemsInput.addEventListener("keypress", function(event) {
+
+  // If the user presses the "Enter" key on the keyboard
+  if (event.key === "Enter") {
+    // Cancel the default action
+    event.preventDefault();
+    // Trigger the button element with a click
+
+    if (itemsInput.value == ""){
+      showToast("Can't add an empty item!");
+      itemsInput.value="";
+    }
+    else{
+      createItem(itemsInput.value);
+      //clear the input
+      itemsInput.value="";
+    }
+  }
+});
+
+
+
+//Delete button
 document.getElementById('buttons-delete').addEventListener('click',()=>{
   removeCheckedBoxes();
 })
@@ -410,6 +471,7 @@ deleteListButton.addEventListener('click',()=>{
 
 });
 
+//Save button button
 
 document.getElementById('save-button').addEventListener('click',()=>{
   writeChangesToDatabase();

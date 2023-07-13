@@ -3,21 +3,37 @@
 
 let listSubText = document.getElementById("listsSubText");
 
-$(document).ready(function() {
-  $.getJSON('/lists/list', function(datos) {
+function loadLists(){
 
-    
+  const listsList = document.getElementById("listsList");
+
+  $.getJSON('/lists/all', function(datos) {
+
+    listsList.replaceChildren();
+
+    datos = datos['lists']
+
       // Manipula los datos en JavaScript
-      for (let i = 0; i < datos.length; i++) {
-        let lists = datos[i];
+    for (let i = 0; i < datos.length; i++) {
+      console.log(i)
+        
+      let lists = datos[i];
+      console.log(lists)
 
-        let list = lists['list'];
-        let amount_items = lists['amount_items'];
+      let list = lists['name'];
+      let amountItems = lists['amount_items'];
+      let listId = lists['id'];
+      let listNameId = lists['list_id']
 
-        addLists(list, true, amount_items);
-      }
-      listSubText.innerHTML=datos.length; 
+      addLists(list, amountItems, listId, listNameId);
+    }
+    listSubText.innerHTML=datos.length; 
   });
+}
+
+$(document).ready(function() {
+
+  loadLists();
 
 });
 
@@ -32,8 +48,9 @@ function writeLists(lists){
 }
 
 
-function listOnLocal(list){
+function listOnLocal(list, listNameId){
   localStorage.setItem('list', list);
+  localStorage.setItem('listNameId', listNameId);
 }
 
 //Check special chars
@@ -49,15 +66,18 @@ function checkSpecialChars(element){
 
 //-----------------Add lists---------------
 
-function addLists(listName, addedFromDb, amountItems){
+function addLists(
+    listName, 
+    amountItems,
+    listId,
+    listNameId
+  )
+  {
 
   if (listName=="AMOUNT_ITEMS"){
     //console.log("Amount ignored");
   }
 
-  else if (checkSpecialChars(listName) == true){
-    showToast("Can't add a list with special characters or spaces!");
-  }
   else{
   
       //console.log(checkSpecialChars(listName));
@@ -79,13 +99,14 @@ function addLists(listName, addedFromDb, amountItems){
     
       //console.log(elementId);
     
-      newList.classList.add("col-sm-6", "mb-3", "mb-sm-0", `id${listName}`);
+      newList.classList.add("col-sm-6", "mb-3", "mb-sm-0");
+      newList.id = `list-${listId}`
       newList.innerHTML = `
     <div class="card">
       <div class="card-body">
         <h5 class="card-title">${listName}</h5>
         <p class="card-text">${elementText}</p>
-        <a href="${listUrl}" class="btn btn-primary" onclick=listOnLocal('${listName}')>See list</a>
+        <a href="${listUrl}/${listNameId}" class="btn btn-primary" onclick=listOnLocal('${listId}','${listNameId}')>See list</a>
       </div>
     </div>
 `;
@@ -94,35 +115,7 @@ function addLists(listName, addedFromDb, amountItems){
     
       completeList.appendChild(newList);
       //showtoast
-    
-      if (addedFromDb != true){
-        console.log("Cargando desde el input")
-    
-        let jsonValues = {list: listName};
-
-
-          $.ajax({
-            url: '/lists/create',
-            type: 'POST',
-            data: JSON.stringify(jsonValues),
-            contentType: 'application/json',
-            success: function(response) {
-                // Recibe la respuesta del servidor
-                if (response['message'] == "True"){
-                  showToast(`List ${listName} added`)
-                }
-            },
-            error: function(error) {
-                // Ocurrió un error al enviar los datos
-                console.log(error);
-                showToast(`Error ${error} adding list`)
-            }
-        });
-
-
-      }
-    
-
+  
   }
 
 }
@@ -142,19 +135,69 @@ function showToast(text){
 }
 
 
+function addInputLists(listName){
+  let jsonValues = {name: listName};
+
+  $.ajax({
+    url: '/lists/create',
+    type: 'POST',
+    data: JSON.stringify(jsonValues),
+    contentType: 'application/json',
+    success: function(response) {
+      console.log(response)
+        // Recibe la respuesta del servidor
+        if (response['message'] == "True"){
+          showToast(`List ${listName} added`)
+          console.log("RECIBIDO")
+          loadLists();
+        }
+    },
+    error: function(error) {
+        // Ocurrió un error al enviar los datos
+        console.log(error);
+        showToast(`Error ${error} adding list`)
+    }
+  });
+
+}
 
 //------------------Buttons listeners---------------------
 
-document.getElementById('button-addon').addEventListener('click',()=>{
-  var listsInput = document.getElementById('add-lists-input');
+let addListBtn = document.getElementById('button-addon');
+var listsInput = document.getElementById('add-lists-input');
 
+//Add list button
+addListBtn.addEventListener('click',()=>{
+  
   if (listsInput.value == ""){
     showToast("Can't add an empty list!");
     listsInput.value="";
   }
   else{
-    addLists(listsInput.value);
+    addInputLists(listsInput.value);
     //clear the input
     listsInput.value="";
   }
 })
+
+//add list with enter key
+
+listsInput.addEventListener("keypress", function(event) {
+
+  // If the user presses the "Enter" key on the keyboard
+  if (event.key === "Enter") {
+    // Cancel the default action
+    event.preventDefault();
+    // Trigger the button element with a click
+
+    if (listsInput.value == ""){
+      showToast("Can't add an empty list!");
+      listsInput.value="";
+    }
+    else{
+      addInputLists(listsInput.value);
+      //clear the input
+      listsInput.value="";
+    }
+  }
+});

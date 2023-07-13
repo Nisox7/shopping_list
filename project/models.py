@@ -21,3 +21,19 @@ class RegisterLink(db.Model):
     link_token = db.Column(db.String(100))
     link_complete = db.Column(db.String(150))
     is_admin = db.Column(db.Boolean(), default=False)
+
+
+class Lists(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    list_id = db.Column(db.String(200))
+    name = db.Column(db.String(150))
+    amount_items = db.Column(db.Integer)
+    img = db.Column(db.String(300))
+
+
+class Items(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(150))
+    list_id = db.Column(db.Integer)
+    amount = db.Column(db.Integer)
+    is_checked = db.Column(db.Boolean(), default=False)
