@@ -1,3 +1,4 @@
+__pycache__/
 create.py
 .venv/
 instance/db.sqlite

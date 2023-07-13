@@ -2,7 +2,6 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for,
 from flask_login import login_required, current_user
 from . import db
 from .models import Config, User, RegisterLink
-from .bbdd import *
 from .register import generate_registration_link
 
 
@@ -27,11 +26,10 @@ def lists():
 @login_required
 def admin():
     if current_user.is_admin:
-        
-        config = Config.query.order_by(Config.id.desc()).first()
+
         users = User.query.all()
 
-        return render_template('admin.html', users=users, registration_enabled=config.registration_enabled)
+        return render_template('admin.html', users=users)
     else:
         return render_template('nopermission.html')  
 
@@ -41,10 +39,11 @@ def admin():
 @login_required
 def admin_registerlink():
     if current_user.is_admin:
-
+        
+        config = Config.query.order_by(Config.id.desc()).first()
         registers_link = RegisterLink.query.all()
 
-        return render_template('adminregister.html', registersLink=registers_link)
+        return render_template('adminregister.html', registersLink=registers_link, registration_enabled=config.registration_enabled)
     else:
         return render_template('nopermission.html')  
 
@@ -112,161 +111,6 @@ def admin_change_permission():
         db.session.commit()
 
         return jsonify(state)
-
-
-
-#-------------------LISTS-------------------
-
-#----Read lists(tables) from db----
-@main.route('/lists/list')
-#@login_required
-def get_tables():
-
-    tables_list=[]
-
-    try:
-        result = get_tables_from_db()
-    except Exception as e:
-        result = f"Error getting tables: {e}"
-    
-    tables = read_db("*","AMOUNT_ITEMS")
-
-    for table in tables:
-        resultado = {"list": table[0], "amount_items": table[1]}
-        #tables_list.append(table[0])
-        #tables_list.append(table[1])
-        tables_list.append(resultado)
-
-
-    return jsonify(tables_list)
-
-#----Write lists(tables) on db----
-@main.route('/lists/creatse', methods=['POST'])
-@login_required
-def create_table():
-    table = request.get_json()
-
-    result_list = table['list']
-
-    try:
-        create_table_db(result_list)
-        result = {'message': 'True'}
-    except:
-        result = {'message': 'False'}
-
-    return jsonify(result)
-
-#----Delete lists(tables) on db----
-@main.route('/lists/deletex', methods=['POST'])
-@login_required
-def delete_table():
-    data = request.get_json()
-    local_list = data['list']
-
-    try:
-        remove_table_from_db(local_list)
-        result={'message':'True'}
-    except Exception as e:
-        result = {'message':f"Error writing: {e}"}
-    
-    return result
-
-
-#-------------------ITEMS-------------------
-
-#----Read items from db----
-@main.route('/items/listx', methods=['POST'])
-@login_required
-def get_items():
-    items_list=[]
-
-    table = request.get_json()
-    table = table['list']
-
-    items = read_db("*", table)
-    #print(items[0])
-
-    for things in items:
-        total_items_list=[]
-
-        item = things[1]
-        item_checked = things[2]
-
-        #print(item)
-        #print(item_checked)
-
-        total_items_list.append(item)
-        total_items_list.append(item_checked)
-
-        items_list.append(total_items_list)
-    
-    print(items_list)
-
-    return jsonify({'message': 'True', 'elements': items_list})
-    #return jsonify({'message': 'True'})
-
-
-#----Write items on db----
-@main.route('/items/creates', methods=['POST'])
-@login_required
-def create_item():
-    data = request.get_json()
-    item = data['item']
-    item_id = data['item_id']
-    local_list = data['list']
-
-    try:
-        write_db(item, item_id, local_list)
-        result={'message':'True'}
-    except Exception as e:
-        result = {'message':f"Error writing: {e}"}
-    
-    
-    return jsonify(result)
-
-#----Delete items on db----
-@main.route('/items/deletex', methods=['POST'])
-@login_required
-def delete_item():
-    data = request.get_json()
-
-    items = (data['items'])
-    local_list = data['list']
-
-    try:
-        for item in items:
-            delete_from_db(item,local_list)
-        result={'message':'True'}
-    except Exception as e:
-        result = {'message':f"Error writing: {e}"}
-    
-    return result
-
-#----Delete items on db----
-@main.route('/items/checkedx', methods=['POST'])
-@login_required
-def items_checked():
-    data = request.get_json()
-
-    try:
-        local_list = data['list']
-
-        checked_items = data['changes']
-
-        for item in checked_items:
-            item_id = (item)
-            status = (checked_items[item])
-
-            item_checked(item_id,status,local_list)
-
-        result={'message':'True'}
-
-    except:
-        result={'message':'False'}
-        
-    return result
-
-
 
 
 @main.route('/profile')

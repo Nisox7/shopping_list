@@ -33,28 +33,6 @@ def login_post():
     return redirect(url_for('main.index'))
 
 
-@auth.route('/signuup')
-def signuup():
-    #config = Config.query.first()
-    try:
-        config = Config.query.order_by(Config.id.desc()).first()
-        if config == None:
-            enabled = True
-        elif config.registration_enabled:
-            enabled = True
-        else:
-            enabled = False
-
-    except:
-        enabled = True
-
-    if enabled == True:
-        return render_template('signup.html')
-    else:
-        flash('The user registration is disabled')
-        return redirect(url_for('main.index'))
-
-
 @auth.route('/signup')
 def signup():
     #config = Config.query.first()
@@ -193,6 +171,8 @@ def profile_edit():
 
     return redirect(url_for('main.profile'))
 
+
+
 @auth.route('/users/edit', methods=['POST'])
 @login_required
 def users_edit():
@@ -221,6 +201,8 @@ def users_edit():
         flash("Error saving the changes")
 
     return redirect(url_for('main.admin'))
+
+
 
 @auth.route('/users/delete', methods=['POST'])
 @login_required
@@ -263,6 +245,8 @@ def users_reset_password():
 
     
         return redirect(url_for('main.admin'))
+
+
 
 @auth.route('/sign-up/<token>')
 def register(token):
