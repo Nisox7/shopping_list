@@ -5,3 +5,6 @@ instance/db.sqlite-journal
 .env
 project/__pycache__/
 migrations/
+project/register/__pycache__/
+project/functions/special_chars/__pycache__/
+project/functions/serialize_list/__pycache__/

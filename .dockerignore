@@ -3,3 +3,6 @@ instance/
 .env
 project/__pycache__/
 migrations/
+project/functions/serialize_list/__pycache__/
+project/functions/special_chars/__pycache__/
+project/register/__pycache__/
