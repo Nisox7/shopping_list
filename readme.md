@@ -19,7 +19,7 @@ To deploy this app using docker:
 
 Deploy using docker-compose:
 
-```yaml
+```yml
 version: '3.3'
 services:
     shopping_list:
@@ -34,8 +34,10 @@ services:
 ```
 
 
-## Usage
 
-Default credentials:
-email: test@demo.com
-password: ChangeMe
+## Default credentials
+
+```
+Mail: "test@demo.com"
+Password: "ChangeMe"
+```
