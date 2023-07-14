@@ -11,7 +11,7 @@ To deploy this app using docker:
 ```bash
   docker run -d \
     --restart=always \
-    -p 10515:5000 \
+    -p 10515:10515 \
     -v ./shopping_list/configs:/app/instance \
     --name shopping_list \
     nisox7/shopping_list:latest
@@ -28,7 +28,7 @@ services:
         volumes:
             - './shopping_list/configs:/app/instance'
         ports:
-            - 10515:5000
+            - 10515:10515
         restart: always
 
 ```
