@@ -14,4 +14,4 @@ else
   echo "Database already migrated"
 fi
 
-uwsgi --ini uwsgi.ini
+gunicorn --bind 0.0.0.0:10515 run:app
