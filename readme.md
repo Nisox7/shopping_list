@@ -34,3 +34,8 @@ services:
 ```
 
 
+## Usage
+
+Default credentials:
+email: test@demo.com
+password: ChangeMe
