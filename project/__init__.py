@@ -4,13 +4,17 @@ from flask_login import LoginManager
 from flask_migrate import Migrate
 import os
 
+from .events import socketio
+
 # init SQLAlchemy so we can use it later in our models
 db = SQLAlchemy()
 
 def create_app():
     app = Flask(__name__)
 
-    secret_key = os.urandom(24)
+    #secret_key = os.urandom(24)
+
+    secret_key="asd1"
 
     app.config['SECRET_KEY'] = secret_key
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
@@ -46,5 +50,7 @@ def create_app():
     # items blueprint
     from .items import items as items_blueprint
     app.register_blueprint(items_blueprint)
+
+    socketio.init_app(app)
 
     return app

@@ -1,3 +1,5 @@
+var socket = io();
+
 function getListFromURL () {
   var url = window.location.href;
   var parts = url.split("/");
@@ -59,6 +61,15 @@ $(document).ready(function() {
 
   loadItems();
 
+  socket.on('connect', function() {
+    console.log('Connected to the SocketIO server!');
+  });
+
+  socket.on("reloadItems", function(data){
+    console.log(data);
+    loadItems();
+  });
+
 });
 
 
@@ -112,7 +123,7 @@ function createItem(item){
         // Recibe la respuesta del servidor
         if (response['message'] == "True"){
           showToast(`Added item: ${item}`)
-          loadItems();
+          socket.emit("itemChanges");
         }
     },
     error: function(error) {
@@ -138,6 +149,7 @@ function deleteItem(elementId){
         // Recibe la respuesta del servidor
         console.log(response);
         if (response['message'] == "True"){
+          socket.emit("itemChanges");
         }
     },
     error: function(error) {
@@ -313,6 +325,7 @@ function writeChangesToDatabase() {
         console.log(response);
         if (response['message'] == "True"){
           saveButton("save");
+          socket.emit("itemChanges");
         }
         else if (response['message'] == "False"){
           saveButton("failed");
@@ -396,10 +409,11 @@ function deleteList(){
           // Recibe la respuesta del servidor
           //console.log(response);
           if (response['message'] == "True"){
-         showToast("List deleted. Backing home...")
-         setTimeout(function() {
-            location.href=indexUrl;
-            }, 1200);
+            socket.emit("listChanges");
+            showToast("List deleted. Backing home...")
+            setTimeout(function() {
+                location.href=indexUrl;
+                }, 1200);
           }
       },
       error: function(error) {

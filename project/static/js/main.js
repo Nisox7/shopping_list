@@ -1,6 +1,8 @@
 //API Connection
 //Writes the lists from the database
 
+var socket = io();
+
 let listSubText = document.getElementById("listsSubText");
 
 function loadLists(){
@@ -34,6 +36,15 @@ function loadLists(){
 $(document).ready(function() {
 
   loadLists();
+
+  socket.on('connect', function() {
+    console.log('Connected to the SocketIO server!');
+  });
+
+  socket.on("reloadList", function(data){
+    console.log(data);
+    loadLists();
+  });
 
 });
 
@@ -149,7 +160,7 @@ function addInputLists(listName){
         if (response['message'] == "True"){
           showToast(`List ${listName} added`)
           console.log("RECIBIDO")
-          loadLists();
+          socket.emit("listChanges");
         }
     },
     error: function(error) {
