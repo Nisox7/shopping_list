@@ -14,4 +14,4 @@ else
   echo "Database already migrated"
 fi
 
-gunicorn -k gevent -w 1 --threads 20 --bind 0.0.0.0:10515 run:app
+gunicorn -k geventwebsocket.gunicorn.workers.GeventWebSocketWorker -w 1 --bind 0.0.0.0:10515 project.app:app

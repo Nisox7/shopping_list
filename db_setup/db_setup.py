@@ -2,7 +2,7 @@ import os
 import sys
 
 project_path = os.path.abspath('/app')
-#project_path = os.path.abspath('/home/nico/Documentos/Programing/projects/shopping_list')
+#project_path = os.path.abspath('/home/nico/Programming/projects/shopping_list')
 sys.path.insert(0, project_path)
 
 from project import create_app, db

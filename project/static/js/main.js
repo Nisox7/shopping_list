@@ -17,10 +17,10 @@ function loadLists(){
 
       // Manipula los datos en JavaScript
     for (let i = 0; i < datos.length; i++) {
-      console.log(i)
+      //console.log(i)
         
       let lists = datos[i];
-      console.log(lists)
+      //console.log(lists)
 
       let list = lists['name'];
       let amountItems = lists['amount_items'];
@@ -38,11 +38,11 @@ $(document).ready(function() {
   loadLists();
 
   socket.on('connect', function() {
-    console.log('Connected to the SocketIO server!');
+    //console.log('Connected to the SocketIO server!');
   });
 
   socket.on("reloadList", function(data){
-    console.log(data);
+    //console.log(data);
     loadLists();
   });
 
@@ -155,11 +155,11 @@ function addInputLists(listName){
     data: JSON.stringify(jsonValues),
     contentType: 'application/json',
     success: function(response) {
-      console.log(response)
+      //console.log(response)
         // Recibe la respuesta del servidor
         if (response['message'] == "True"){
           showToast(`List ${listName} added`)
-          console.log("RECIBIDO")
+          //console.log("RECIBIDO")
           socket.emit("listChanges");
         }
     },

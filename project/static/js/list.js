@@ -62,11 +62,11 @@ $(document).ready(function() {
   loadItems();
 
   socket.on('connect', function() {
-    console.log('Connected to the SocketIO server!');
+    //console.log('Connected to the SocketIO server!');
   });
 
   socket.on("reloadItems", function(data){
-    console.log(data);
+    //console.log(data);
     loadItems();
   });
 
@@ -147,7 +147,7 @@ function deleteItem(elementId){
     contentType: 'application/json',
     success: function(response) {
         // Recibe la respuesta del servidor
-        console.log(response);
+        //console.log(response);
         if (response['message'] == "True"){
           socket.emit("itemChanges");
         }
@@ -322,10 +322,10 @@ function writeChangesToDatabase() {
     contentType: 'application/json',
     success: function(response) {
         // Recibe la respuesta del servidor
-        console.log(response);
+        //console.log(response);
         if (response['message'] == "True"){
           saveButton("save");
-          socket.emit("itemChanges");
+          socket.emit("itemCheckedChanges");
         }
         else if (response['message'] == "False"){
           saveButton("failed");
@@ -360,7 +360,7 @@ function removeCheckedBoxes(){
       let elementId = checkBoxes.id;
       forDelete.push(elementId);
 
-      console.log(elementId)
+      //console.log(elementId)
 
       //console.log("PRESIONADO:")
       //console.log(checkBoxes.id);
@@ -376,7 +376,7 @@ function removeCheckedBoxes(){
     }
   }
 
-  console.log(forDelete);
+  //console.log(forDelete);
 
   if (amount == 0){
     showToast("Select an item for delete!");
