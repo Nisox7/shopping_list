@@ -9,10 +9,12 @@ from .events import socketio
 # init SQLAlchemy so we can use it later in our models
 db = SQLAlchemy()
 
+
 def create_app():
     app = Flask(__name__)
 
-    secret_key = os.urandom(24)
+    #secret_key = os.urandom(24)
+    secret_key = "132huasuih8d7hsa78HAhASDASHD78ASYDGHAS"
 
     app.config['SECRET_KEY'] = secret_key
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
@@ -48,6 +50,10 @@ def create_app():
     # items blueprint
     from .items import items as items_blueprint
     app.register_blueprint(items_blueprint)
+
+    from .main import page_not_found
+
+    app.register_error_handler(404, page_not_found)
 
     socketio.init_app(app)
 

@@ -34,7 +34,6 @@ def admin():
         return render_template('nopermission.html')  
 
 
-
 @main.route('/admin/registerlink')
 @login_required
 def admin_registerlink():
@@ -48,6 +47,10 @@ def admin_registerlink():
         return render_template('nopermission.html')  
 
 
+@main.errorhandler(404)
+def page_not_found(e):
+    # note that we set the 404 status explicitly
+    return render_template('not_found.html'), 404
 
 @main.route('/admin/registerlink/new', methods=['POST'])
 @login_required

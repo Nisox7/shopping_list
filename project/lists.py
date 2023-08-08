@@ -35,7 +35,7 @@ def lists_id(list_id):
             return render_template('list.html')
     
     if response==400:
-        return render_template('notfound.html',lista=list_id), 404
+        return render_template('list_not_found.html',lista=list_id), 404
 
 #-------Create--------
 

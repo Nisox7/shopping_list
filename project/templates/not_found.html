@@ -1,0 +1,19 @@
+<script src='../static/js/toggle_theme.js'></script>
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<div style="display: flex; flex-direction: column; align-items: center;">
+    
+    <h1>404</h1>
+    <h3>Page not found</h3>
+
+    <br>
+
+    <div class="buttons-container text-center">
+        <a href="{{ url_for('main.index') }}"><input class="btn btn-outline-primary btn" id="buttons-back" type="submit"
+            value="Back home"></a>
+    </div>
+</div>
+{% endblock %}
