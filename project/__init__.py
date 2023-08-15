@@ -13,8 +13,8 @@ db = SQLAlchemy()
 def create_app():
     app = Flask(__name__)
 
-    #secret_key = os.urandom(24)
-    secret_key = "132huasuih8d7hsa78HAhASDASHD78ASYDGHAS"
+    secret_key = os.urandom(24)
+    #secret_key = "132huasuih8d7hsa78HAhASDASHD78ASYDGHAS"
 
     app.config['SECRET_KEY'] = secret_key
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
