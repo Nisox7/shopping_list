@@ -2,9 +2,12 @@
 <script src='../static/js/jquery.min.js'></script>
 <script src='../static/js/toggle_theme.js'></script>
 
+
 {% extends "base.html" %}
 
 {% block content %}
+
+<link rel="stylesheet" href="../static/css/main.css">
 
 <div class="container">
   <div class="container shadow p-3 mb-5 bg-body-tertiary rounded">
@@ -25,7 +28,7 @@
       </div>
     </nav>
     
-    <div class="row lists-list" id="listsList">
+    <div class="row row-cols-1 row-cols-md-3 g-4 lists-list" id="listsList">
       <!--LISTS ARE HERE, loaded from js-->
     </div>
 

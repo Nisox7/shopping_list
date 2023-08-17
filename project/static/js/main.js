@@ -110,14 +110,17 @@ function addLists(
     
       //console.log(elementId);
     
-      newList.classList.add("col-sm-6", "mb-3", "mb-sm-0");
+      //newList.classList.add("col-sm-6", "mb-3", "mb-sm-0");
+      newList.classList.add("col");
       newList.id = `list-${listId}`
       newList.innerHTML = `
-    <div class="card">
+    <div class="card h-100">
       <div class="card-body">
         <h5 class="card-title">${listName}</h5>
         <p class="card-text">${elementText}</p>
-        <a href="${listUrl}/${listNameId}" class="btn btn-primary" onclick=listOnLocal('${listId}','${listNameId}')>See list</a>
+      </div>
+      <div class="card-footer" style="text-align: end;">
+        <a href="${listUrl}/${listNameId}" class="btn btn-outline-primary" onclick=listOnLocal('${listId}','${listNameId}')>See list</a>
       </div>
     </div>
 `;
