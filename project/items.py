@@ -1,8 +1,10 @@
 from flask import Blueprint, jsonify, request
-from flask_login import login_required
+from flask_login import login_required, current_user
 from . import db
 from .models import Items, Lists
 from .functions.serialize_list.serialize_list import serialize_items_list
+
+from datetime import datetime
 
 items = Blueprint('Items', __name__)
 
@@ -48,7 +50,7 @@ def items_create():
         is_checked=False
 
         item = Items(name=item_name, list_id=list_id, amount=amount, is_checked=is_checked)
-        
+
         db.session.add(item)
         db.session.commit()
 
@@ -118,15 +120,23 @@ def items_checked():
     #post
     try:
         data = request.get_json()
+        
+        list_id = (data['list'])
+        items = (data['changes'])
 
-
-        for item in data:
+        for item in items:
             item_id = (item)
-            status = (data[item])
+            status = (items[item])
 
-            items = Items.query.filter_by(id=item_id).first()
+            itemsx = Items.query.filter_by(id=item_id).first()
 
-            items.is_checked = status
+            itemsx.is_checked = status
+        
+
+        listx = Lists.query.filter_by(list_id=list_id).first()
+        listx.updated = datetime.utcnow()
+
+        db.session.add(listx)
 
         db.session.commit()
 
@@ -139,7 +149,12 @@ def increment_items(list_id):
 
     try:
         listx = Lists.query.filter_by(list_id=list_id).first()
+        
         listx.amount_items = listx.amount_items+1
+        listx.updated = datetime.utcnow()
+
+        db.session.add(listx)
+
         db.session.commit()
 
         return True
@@ -152,7 +167,12 @@ def decrement_items(list_id):
 
     try:
         listx = Lists.query.filter_by(list_id=list_id).first()
+        
         listx.amount_items = listx.amount_items-1
+        listx.updated = datetime.utcnow()
+
+        db.session.add(listx)
+
         db.session.commit()
 
         return True

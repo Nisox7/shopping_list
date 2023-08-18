@@ -314,11 +314,17 @@ function writeChangesToDatabase() {
   //}
   saveButton("saving");
 
+  let changesWithList = {
+    list:localListId,
+    changes
+  }
+
+  console.log(changesWithList)
 
   $.ajax({
     url: '/items/checked',
     type: 'POST',
-    data: JSON.stringify(changes),
+    data: JSON.stringify(changesWithList),
     contentType: 'application/json',
     success: function(response) {
         // Recibe la respuesta del servidor

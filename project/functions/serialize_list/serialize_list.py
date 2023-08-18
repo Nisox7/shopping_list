@@ -7,6 +7,8 @@ def serialize_lists_list(lists_list):
             'name': lists.name,
             'list_id': lists.list_id,
             'amount_items':lists.amount_items,
+            'created':lists.created,
+            'updated':lists.updated
         }
         serialized_lists.append(serialized_list)
     

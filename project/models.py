@@ -1,5 +1,6 @@
 from flask_login import UserMixin
 from . import db
+from datetime import datetime
 
 
 class User(UserMixin, db.Model):
@@ -29,6 +30,8 @@ class Lists(db.Model):
     name = db.Column(db.String(150))
     amount_items = db.Column(db.Integer)
     img = db.Column(db.String(300))
+    created = db.Column(db.DateTime, default=datetime.utcnow)
+    updated = db.Column(db.DateTime)
 
 
 class Items(db.Model):

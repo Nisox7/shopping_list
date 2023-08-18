@@ -26,8 +26,10 @@ function loadLists(){
       let amountItems = lists['amount_items'];
       let listId = lists['id'];
       let listNameId = lists['list_id']
+      let created = lists['created']
+      let updated = lists['updated']
 
-      addLists(list, amountItems, listId, listNameId);
+      addLists(list, amountItems, listId, listNameId, created, updated);
     }
     listSubText.innerHTML=datos.length; 
   });
@@ -75,22 +77,86 @@ function checkSpecialChars(element){
 
 }
 
+
+function serializeDatee(date){
+  const utcDate = new Date(date);
+  console.log(utcDate)
+  const clientOffsetMinutes = -new Date().getTimezoneOffset();
+  const adjustedUtcTime = utcDate.getTime() + clientOffsetMinutes * 60000;
+  const adjustedDate = new Date(adjustedUtcTime);
+
+  const formattedDate = new Intl.DateTimeFormat('en-US', {
+    hour: 'numeric',
+    minute: 'numeric',
+    timeZone: 'UTC'
+  }).format(adjustedDate);
+
+
+  const formattedText = new Intl.DateTimeFormat('en-US', {
+    weekday: 'short', // Display short weekday name (e.g., Thu)
+    day: 'numeric',   // Display day of the month (e.g., 17)
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: false
+  }).format(adjustedDate);
+
+  return formattedText
+}
+
+
+function serializeDate(date) {
+  const utcDate = new Date(date);
+  const clientOffsetMinutes = -new Date().getTimezoneOffset();
+  const adjustedUtcTime = utcDate.getTime() + clientOffsetMinutes * 60000;
+  const adjustedDate = new Date(adjustedUtcTime);
+
+  const currentDate = new Date();
+
+  if (adjustedDate.getDate() === currentDate.getDate()) {
+    // Return formattedDate if the day is the same as the user's browser day
+    const formattedDate = new Intl.DateTimeFormat('en-US', {
+      hour: 'numeric',
+      minute: 'numeric',
+      timeZone: 'UTC',
+      hour12:false
+    }).format(adjustedDate);
+
+    return formattedDate;
+  } else {
+
+    // Return formattedText in the desired format (day/month)
+    const day = adjustedDate.getDate();
+    const month = adjustedDate.getMonth() + 1; // Months are 0-indexed
+
+    return `${day}/${month}`;
+  }
+}
+
+
 //-----------------Add lists---------------
 
 function addLists(
     listName, 
     amountItems,
     listId,
-    listNameId
+    listNameId,
+    created,
+    updated
   )
+
+
+
   {
 
-  if (listName=="AMOUNT_ITEMS"){
-    //console.log("Amount ignored");
-  }
+    if (updated == null) {
 
-  else{
-  
+      var dateText = `Created at: ${serializeDate(created)}`
+      
+    }
+    else{
+      var dateText = `Updated: ${serializeDate(updated)}`
+    }
+
       //console.log(checkSpecialChars(listName));
     
       //console.log(element);
@@ -119,7 +185,8 @@ function addLists(
         <h5 class="card-title">${listName}</h5>
         <p class="card-text">${elementText}</p>
       </div>
-      <div class="card-footer" style="text-align: end;">
+      <div class="card-footer d-flex align-items-center justify-content-between">
+        <p class="m-0">${dateText}</p>
         <a href="${listUrl}/${listNameId}" class="btn btn-outline-primary" onclick=listOnLocal('${listId}','${listNameId}')>See list</a>
       </div>
     </div>
@@ -129,8 +196,6 @@ function addLists(
     
       completeList.appendChild(newList);
       //showtoast
-  
-  }
 
 }
 

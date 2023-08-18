@@ -10,6 +10,10 @@ let localTheme = localStorage.getItem('theme');
   
 if (localTheme == null){
   console.log("Theme not saved on localStorage");
+  const darkThemeMq = window.matchMedia("(prefers-color-scheme: dark)");
+  if (darkThemeMq['matches'] === true){
+    toggleTheme("dark");
+  }
 }
 else{
   toggleTheme(localTheme);
