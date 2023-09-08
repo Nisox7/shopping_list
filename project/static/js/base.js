@@ -1,4 +1,13 @@
 document.addEventListener('DOMContentLoaded', function() {
+
+  //-----------Transitions between pages-----------
+
+  window.setTimeout(function() {
+    document.body.className = '';
+  }, 230);
+
+  //-----------Nav-Links - Active links-----------
+
     var navLinks = document.querySelectorAll('.nav-link');
     var themeToggle = document.querySelector('.theme-toggle');
   
@@ -28,4 +37,3 @@ document.addEventListener('DOMContentLoaded', function() {
   
     addClickListenerToNavLinks();
   });
-  

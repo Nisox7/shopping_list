@@ -180,7 +180,7 @@ function addLists(
       newList.classList.add("col");
       newList.id = `list-${listId}`
       newList.innerHTML = `
-    <div class="card h-100">
+    <div class="card h-100" id="test">
       <div class="card-body">
         <h5 class="card-title">${listName}</h5>
         <p class="card-text">${elementText}</p>

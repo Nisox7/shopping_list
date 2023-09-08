@@ -14,7 +14,4 @@ else
   echo "Database already migrated"
 fi
 
-flask --app project db migrate
-flask --app project db upgrade
-
 gunicorn -k geventwebsocket.gunicorn.workers.GeventWebSocketWorker -w 1 --bind 0.0.0.0:10515 project.app:app

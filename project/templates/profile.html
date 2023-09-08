@@ -42,6 +42,8 @@
                 <a class="btn btn-warning" href="#" data-bs-toggle="modal" data-bs-target="#changeUserModal">Edit</a>
                 <a class="btn btn-danger" href="#" data-bs-toggle="modal" data-bs-target="#changePasswordModal">Change
                   password</a>
+                <a href="{{ url_for('auth.logout') }}"><input class="btn btn-secondary btn" id="buttons-back" type="submit"
+                  value="Logout"></a>
               </div>
             </div>
           </div>
@@ -66,8 +68,6 @@
     <div class="col-sm-4">
       <a class="btn btn-outline-primary btn-md"
       href="{{ url_for('main.index') }}">Back home</a>
-      <a href="{{ url_for('auth.logout') }}"><input class="btn btn-outline-secondary btn" id="buttons-back" type="submit"
-          value="Logout"></a>
     </div>
   </div>
 </div>
@@ -91,7 +91,7 @@
               </div>
               <div class="col-sm-9 text-secondary">
                 <input type="password" class="form-control" id="actual-password" name="actual-password"
-                  placeholder="****" required>
+                  placeholder="*******" required>
               </div>
             </div>
             <div class="row mb-3">

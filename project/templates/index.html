@@ -9,8 +9,9 @@
 
 <link rel="stylesheet" href="../static/css/main.css">
 
+
 <div class="container">
-  <div class="container shadow p-3 mb-5 bg-body-tertiary rounded">
+  <div class="container shadow p-3 mb-4 bg-body-tertiary rounded">
 
     <div class="input-group">
       <input type="text" class="form-control" id="add-lists-input" placeholder="Add list"
@@ -20,16 +21,22 @@
 
   </div>
 
-  <div class="cards-menu shadow p-3 mb-5 bg-body-tertiary rounded">
+  <div class="cards-menu shadow p-3 mb-5 bg-body-tertiary rounded shadow">
     <nav class="navbar bg-body-tertiary">
       <div class="container-fluid">
         <span class="navbar-brand mb-0 h1">Lists</span>
         <span id="listsSubText"></span>
       </div>
     </nav>
-    
+
     <div class="row row-cols-1 row-cols-md-3 g-4 lists-list" id="listsList">
       <!--LISTS ARE HERE, loaded from js-->
+      <div class="d-flex justify-content-center">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+      
     </div>
 
   </div>
@@ -52,9 +59,10 @@
       </div>
     </div>
   </div>
+</div>
 
-  <script src="../static/js/socket.io_4.0.1_socket.io.js"></script>
-  <script>var listUrl = "{{ url_for('main.lists') }}";</script>
-  <script src='../static/js/main.js'></script>
+<script src="../static/js/socket.io_4.0.1_socket.io.js"></script>
+<script>var listUrl = "{{ url_for('main.lists') }}";</script>
+<script src='../static/js/main.js'></script>
 
-  {% endblock %}
+{% endblock %}
